@@ -1,0 +1,83 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+import "data_header.proto";
+
+package minieye;
+
+message GnssposData {
+    Header header = 1;                    // 头部信息，包括数据生成时的时间戳
+    bool is_valid = 2;                    // 数据有效性标志位：true表示是新接收的数据，false表示是历史数据
+    google.protobuf.UInt32Value gps_week = 3;                  // GPS时间，周数
+    google.protobuf.DoubleValue gps_sec = 4;                   // GPS时间，周内秒(s)
+    google.protobuf.UInt32Value pos_type = 5;                  // 定位状态
+    google.protobuf.DoubleValue latitude = 6;                  // 纬度（deg）
+    google.protobuf.DoubleValue longitude = 7;                 // 经度（deg）
+    google.protobuf.FloatValue undulation = 8;                 // 海拔高度与椭球面高度差（m）
+    google.protobuf.FloatValue height = 9;                     // 海拔高度（m）
+    google.protobuf.FloatValue lat_std = 10;                   // 纬度标准差(m)
+    google.protobuf.FloatValue lon_std = 11;                   // 经度标准差(m)
+    google.protobuf.FloatValue hgt_std = 12;                   // 高度标准差(m)
+    google.protobuf.UInt32Value svs = 13;                      // 跟踪卫星数
+    google.protobuf.UInt32Value soln_svs = 14;                 // 解算卫星数
+    google.protobuf.UInt32Value diff_age = 15;                 // 差分龄期(s)
+    google.protobuf.FloatValue hdop = 16;                      // 水平位置精度因子
+    google.protobuf.FloatValue pdop = 17;                      // 三维位置精度因子
+    google.protobuf.FloatValue tdop = 18;                      // 时间精度因子
+    google.protobuf.FloatValue vdop = 19;                      // 垂直位置精度因子
+    google.protobuf.FloatValue gdop = 20;                      // 几何精度因子
+}
+
+message GnssvelData {
+    Header header = 1;                      // 头部信息，包括数据生成时的时间戳
+    bool is_valid = 2;                      // 数据有效性标志位：true表示是新接收的数据，false表示是历史数据
+    google.protobuf.UInt32Value gps_week = 3;                    // GPS时间，周数
+    google.protobuf.DoubleValue gps_sec = 4;                     // GPS时间，周内秒(s)
+    google.protobuf.UInt32Value sol_status = 5;                  // 解算状态
+    google.protobuf.UInt32Value vel_type = 6;                    // 速度类型，多普勒或位置平滑
+    google.protobuf.FloatValue hor_spd = 7;                      // (ENU系下)水平速度（m/s）
+    google.protobuf.FloatValue vert_spd = 8;                     // (ENU系下)天向速度（m/s），向上为正
+    google.protobuf.FloatValue trk_gnd = 9;                      // 前进方向与真北夹角（deg， 0~360），北偏东为正
+    google.protobuf.FloatValue latency = 10;                     // 速度延时(s)
+    google.protobuf.FloatValue vel_x = 11;                       // (ENU坐标系下)，X轴方向速度（m/s）
+    google.protobuf.FloatValue vel_y = 12;                       // (ENU坐标系下)，Y轴方向速度（m/s）
+    google.protobuf.FloatValue vel_z = 13;                       // (ENU坐标系下)，Z轴方向速度（m/s）
+    google.protobuf.FloatValue vel_x_std = 14;                   // (ENU坐标系下)，X轴方向速度标准差（m/s）
+    google.protobuf.FloatValue vel_y_std = 15;                   // (ENU坐标系下)，Y轴方向速度标准差（m/s）
+    google.protobuf.FloatValue vel_z_std = 16;                   // （ENU坐标系下)，Z轴方向速度标准差（m/s）
+}
+
+message GnssheadingData {
+    Header header = 1;                      // 头部信息，包括数据生成时的时间戳
+    bool is_valid = 2;                      // 数据有效性标志位：true表示是新接收的数据，false表示是历史数据
+    google.protobuf.UInt32Value gps_week = 3;                    // GPS时间，周数
+    google.protobuf.DoubleValue gps_sec = 4;                     // GPS时间，周内秒(s)
+    google.protobuf.UInt32Value svs = 5;                         // 定向天线可见卫星数
+    google.protobuf.UInt32Value soln_svs = 6;                    // 参与定向的卫星数
+    google.protobuf.UInt32Value pos_type = 7;                    // 定向状态
+    google.protobuf.FloatValue length = 8;                       // 定向基线长度（m）
+    google.protobuf.FloatValue heading = 9;                      // 方位角（deg，0~360），北偏东为正
+    google.protobuf.FloatValue pitch = 10;                       // 俯仰角（deg，-90~90），向上为正
+    google.protobuf.FloatValue hdg_std = 11;                     // 方位角标准差（deg）
+    google.protobuf.FloatValue pitch_std = 12;                   // 俯仰角标准差（deg）
+}
+
+/*
+    {
+            "topic": "apa_gnss",
+            "dds_mode": "shm",
+            "data_refresh_rate": 1,
+            "buff_num": 100,
+            "//": "elem_max_size实际大小251+3n字节,待实测确定",
+            "elem_max_size": 1000
+    }
+*/
+// topic : "apa_gnss"
+// breif : 周期性信号，1hz，CAN收到后马上dds发布，提高实时性
+// 泊车用Gps数据信号，内容可选，部分数据无法获取时，可不发送
+message GnssData {
+    repeated GnssposData gnss_pos = 1;
+    repeated GnssvelData gnss_vel = 2;
+    repeated GnssheadingData gnss_heading = 3;
+    uint64 timestamp = 4;                      // dds发出数据的管理面时间(毫秒)
+    uint64 tick = 5;                           // dds发出数据的数据面时间(毫秒)
+}

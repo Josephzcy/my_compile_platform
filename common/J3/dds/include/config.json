@@ -1,0 +1,11 @@
+{
+  "log_level": 1,
+  "topics": [
+    {
+      "topic": "adas",
+      "dds_mode": "shm",
+      "buff_num": 100,
+      "elem_max_size": 1000000
+    }
+  ]
+}

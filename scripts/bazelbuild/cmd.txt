@@ -1,0 +1,1 @@
+./scripts/bazelbuild/build.sh linux debug //examples/hello-world:hello-world

@@ -1,0 +1,54 @@
+syntax = "proto3";
+// VERSION
+// 0.1
+package minieye.parking;
+import "planning.proto";
+import "odometry_3d.proto";
+import "parkingspace.proto";
+
+message MapEngineResponse {
+  uint64 timestamp = 1;            // 管理面时间戳 us
+  uint64 tick = 2;                 // 数据面时间戳 us
+  uint64 frame_id = 3;             // 帧ID
+  Planning planning = 4;
+  // 除target_parking_slot可能发2次以外，别的最多发1次
+  Point3d mapping_triger_point = 5;       // ap_map坐标系下开始建图时的点
+  repeated Point3d trajectory = 6;	   // ap_map坐标系下历史轨迹信息
+  perception.ParkingSlot target_parking_slot = 7; // ap_map坐标系下历史轨迹信息, id为-1时没找到对应车位，id为正整数时找到目标车位
+
+  message Turn {
+    enum TurnType {
+            U       = 0; 
+            ClockWise    = 1; 
+            AntiClockWise = 2;
+        };
+    Point3d turn_start = 1;
+    Point3d turn_end = 2;
+    TurnType true_type = 3;
+  }
+  repeated Turn turn = 8;
+
+  message Slope {
+    enum SlopeType {
+            Up       = 0; 
+            Down    = 1; 
+        };
+    Point3d slope_start = 1;
+    Point3d slope_end = 2;
+    SlopeType slope_type = 3;
+  }
+  repeated Slope slope = 9;
+  
+  message Semantic {
+    enum SemanticType {
+            ParkingSlot = 0; 
+            Lane = 1;
+            SpeedBump = 2;
+            Pillar = 3;
+        };
+    SemanticType semantic_type = 1;
+    repeated Point3d contour_points = 2;
+  }
+  repeated Semantic semantic = 10;
+  Pose6d mapping_end_pose = 11;       // ap_map坐标系下建图终点
+}

@@ -1,0 +1,5 @@
+SET(CMAKE_CXX_STANDARD 11)
+
+ADD_LIBRARY(mp4writer ${LIBS_TYPE} MP4Writer.cpp)
+ADD_EXECUTABLE(jpg2mp4 main.cpp)
+TARGET_LINK_LIBRARIES(jpg2mp4 mp4writer)

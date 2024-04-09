@@ -1,0 +1,48 @@
+{
+  "elements": [
+    {
+      "component": "havp_inference",
+      "type": "module",
+      "files": [
+        "/src/cnn/linux"
+      ]
+    },
+    {
+      "component": "vehicle_control_dds",
+      "type": "module",
+      "files": [
+        "/src/can_io/vehicle_control_dbc",
+        "/src/third_party"
+      ]
+    },
+    {
+      "component": "apa_planning",
+      "type": "module",
+      "files": [
+        "/third_party",
+        "/src/apa_planning/test"
+      ]
+    }, 
+    {
+      "component": "apa_manager",
+      "type": "module",
+      "files": [
+        "/src/state_nanomsg"
+      ]
+    }, 
+    {
+      "component": "apa_manager",
+      "type": "module",
+      "files": [
+        "/src/state_nanomsg"
+      ]
+    },
+    {
+      "component": "wheel_radius_calibration",
+      "type": "service",
+      "files": [
+        "/test"
+      ]
+    }
+  ]
+}

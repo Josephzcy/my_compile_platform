@@ -1,0 +1,49 @@
+{
+    "avm_calib": {
+        "readers": [{
+                "camera30": "CameraFrame"
+            }
+        ],
+        "writers": [{
+                "avm_calib_status": "AvmCalibState"
+            }
+        ]
+    },
+    "apa_odometry_dds": {
+        "readers": [{
+                "imu": "ImuDataList"
+            }, {
+                "vehicle_signal": "VehicleSignal"
+            }
+        ],
+        "writers": [{
+                "apa_odometry": "ApaOdometry"
+            }
+        ]
+    },
+    "vehicle_control_dds": {
+        "readers": [{
+                "apa_odometry": "ApaOdometry"
+            }, {
+                "vehicle_signal": "VehicleSignal"
+            }, {
+                "planning": "Planning"
+            }
+        ],
+        "writers": [{
+                "vehicle_control": "VehicleControl"
+            }
+        ]
+    },
+    "bird_eye_view": {
+        "readers": [{
+                "camera30": "CameraFrame"
+            }
+        ],
+        "writers": [{
+                "camera41": "CameraFrame"
+            }
+        ]
+    }
+}
+

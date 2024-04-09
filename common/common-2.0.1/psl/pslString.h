@@ -1,0 +1,18 @@
+#ifndef __TX_STRING__
+#define __TX_STRING__
+///////////////////////////////////////////////////////////////////////
+#include <string.h>
+
+void  trimR( 
+	char* string
+); 
+char* getFilenameFromPath(
+	char* path
+);
+void trimCR(
+	char* string
+);
+
+    
+///////////////////////////////////////////////////////////////////////
+#endif /* __TX_STRING__ */

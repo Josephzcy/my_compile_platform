@@ -1,0 +1,7 @@
+name:Pooling3
+type:Pooling
+kernel_size:2
+stride:2
+pad:0
+method:MAX
+global_pool:0

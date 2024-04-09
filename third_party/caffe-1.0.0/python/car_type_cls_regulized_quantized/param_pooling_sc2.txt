@@ -1,0 +1,7 @@
+name:pooling_sc2
+type:Pooling
+kernel_size:3
+stride:2
+pad:0
+method:MAX
+global_pool:0

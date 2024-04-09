@@ -1,0 +1,10 @@
+Data1	Input	0	1	Convolution1	
+Convolution1	ConvolutionRistretto	1	Data1	3	1	80	80	1	Pooling1	
+ReLU1	ReLU	1	Convolution1	3	16	80	80	0	
+Pooling1	Pooling	1	Convolution1	3	16	80	80	1	Convolution2	
+Convolution2	ConvolutionRistretto	1	Pooling1	3	16	40	40	1	Pooling2	
+ReLU2	ReLU	1	Convolution2	3	24	40	40	0	
+Pooling2	Pooling	1	Convolution2	3	24	40	40	1	InnerProduct1	
+InnerProduct1	FcRistretto	1	Pooling2	3	24	20	20	1	InnerProduct2	
+ReLU3	ReLU	1	InnerProduct1	3	512	1	1	0	
+InnerProduct2	FcRistretto	1	InnerProduct1	3	512	1	1	0	

@@ -1,0 +1,41 @@
+﻿syntax = "proto3";
+// VERSION
+// 0.1
+package minieye;
+
+/*
+       {
+           "topic": "ihu_to_soc",
+           "dds_mode": "shm",
+           "data_refresh_rate": 20,
+           "buff_num": 20,
+           "elem_max_size": 1024
+       }
+*/
+
+
+
+message IHUToSoc
+{
+  bool APAKeySts               = 1; // 0x0 Not active, 0x1:Active
+  uint32 Open_Switch           = 2; // 0x0: no Req, 0x1:open park in, 0x2:open park out, 0x3:open free park in, 0x4:open VTR(循迹倒车), 0x5:open RPA(遥控) park in, Ox7:close
+  uint32 Engage_Confirm_Switch = 3; // 0x0: no Req, 0x1:confirm park in, 0x2:confirm park out, 0x3:confirm free park in, 0x4: confirm VTR
+  uint32 Resume_Switch         = 4; // 0x0: default, 0x1: APA resume; 0x2: VTR resume; 0x3: RPA resume
+  bool Parking_Free_Confirm    = 5; // 0x0: no Req, 0x1:parking free confirm;
+  
+  // rpa
+  bool Phone_Bluetooth_State   = 6; // 0x0:invalid, 0x1: valid  // 用来判断手机与车辆的连接状态
+  uint32 Phone_Open_Switch     = 7; // 0x0: default, 0x1: open rpa parking out; 0x2: open rpa parking in; 0x3: close // 手机端选择rpa功能
+  uint32 RPA_ActiveBtn_Sts     = 8; // 0x0: no req; 0x1: confirm parking in; 0x2: confirm parking out; 0x3: reserved 
+  uint32 RPA_Suspend_Sts       = 9; // 0x0: no req; 0x1:Suspend RPA(手机APP处于锁屏/后台运行/分屏/悬浮图标/退出等);0x2: Recover RPA (可恢复中断);0x3: Pause button(用户点击暂停)
+  uint32 RPA_ParkingOUtDirection_Btn = 10; // 0x0: No Req 0x1: Vertical Forward (垂直前方) 0x2: Vertical Left（垂直左侧） 0x3: Vertical Right（垂直右侧） 0x4: Horizontal Left（水平右侧） 0x5: Horizontal Right（水平左侧）
+  bool IHU_status_Feedback     = 11;  // 0x0: unavailable; 0x1:available     (IHU 启动完成可用状态)
+  bool RPA_Key_Sts             = 12; // 0x0: not active; 0x1: active
+  bool RPA_Lock_Car            = 13; // 0x0: not locked; lock car; 
+
+
+
+
+  uint64 timestamp = 14;             // dds发布时的管理面时间(微秒)
+  uint64 tick = 15;                  // dds发布时的数据面时间(微秒)
+}

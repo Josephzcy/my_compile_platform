@@ -1,0 +1,14 @@
+AUX_SOURCE_DIRECTORY(. SRC_LIST)
+
+ADD_DEFINITIONS(-std=c++11)
+ADD_LIBRARY(file_operate ${LIBS_TYPE} ${SRC_LIST})
+TARGET_LINK_LIBRARIES(file_operate ${OpenCV_LIBS} system ${Glog_LIBS})
+
+#ADD_LIBRARY(concurrency_shared SHARED ${SRC_LIST})
+#SET_TARGET_PROPERTIES(concurrency_shared PROPERTIES OUTPUT_NAME "concurrency")
+#if (WIN32)
+#elseif(ANDROID)
+#else()
+#endif()
+
+INCLUDE_DIRECTORIES(${PROJECT_ROOT_PATH})

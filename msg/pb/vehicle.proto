@@ -1,0 +1,69 @@
+syntax = "proto3";
+import "geometry.proto";
+import "data_source.proto";
+
+package perception;
+
+/*
+	{
+	    "topic": "vehicle",
+	    "dds_mode": "shm",
+	    "data_refresh_rate": 20,
+	    "buff_num": 10,
+	    "elem_max_size": 10240
+	} 
+*/
+message Vehicle {                                 // 车辆输出合集
+    message VehicleMeasureRes {                   // 车辆信息
+        perception.common.Rect2f det_rect = 1;    // CNN检测框
+        perception.common.Rect2f reg_rect = 2;    // CNN回归框
+        perception.common.Rect2f track_rect = 3;  // 跟踪框
+        perception.common.Rect2f smooth_rect = 4; // 光流跟踪框
+        float confidence = 5;                     // 检测置信度
+        int32 hit_type = 6;                       // 检测分类（0车辆，1行人，2两轮车)
+        int32 vehicle_class = 7;                  // 目标车车型分类, 0-Negative, 1-Car, 2-MiniBus, 3-Bus, 4-Truck, 5-Special, 6无意义
+        int32 vehicle_id = 8;                     // 目标车id
+        int32 track_cnt = 9;                      // 目标车被Trace跟踪的次数
+        int32 track_status = 10;                  // 目标车光流跟踪的状态,0-Failed, 1-Success, 2-Predict, 3-Init, 4-
+        float track_confidence = 11;              // 目标车光流跟踪的方差
+        float vehicle_width = 12;                 // 目标车的真实宽度
+        float vehicle_height = 13;                // 目标车的真实高度
+        float longitude_dist = 14;                // 目标车中心到自车车头/相机平面的垂直距离
+        float lateral_dist = 15;                  // 目标车车尾中点到自车纵轴线的垂直距离
+        float rel_lateral_speed = 16;             // 目标车辆与自车的横向相对车速
+        float rel_speed = 17;                     // 两车相对速度； 两车距离接近为负，反之为正
+        float speed_acc = 18;                     // 两车相对加速度
+        float headway = 19;                       // 时距=距离/自车速度
+        float ttc = 20;                           // 碰撞时间
+        bool on_route = 21;                       // 目标车是否在本车的行进路线上
+        bool is_still = 22;                       // 目标车是否绝对静止
+        bool rel_slowdown = 23;                   // 相对距离是否减少
+        bool is_crucial = 24;                     // 目标车是否为关键车
+        bool is_second_crucial = 25;              // 目标车是否为次关键车
+        int32 pose_class = 26;                    // 目标车辆姿态, 0-Tail, 1-Head, 2-BoradSide
+        int32 trace_status = 27;                  // 车辆目标检测状态, 0-目标初始检测未达到稳定跟踪, 1-目标稳定检测且跟踪, 2-目标稳定跟踪但未稳定检测
+    }
+
+    message VehicleWarning {                      // 告警信息
+        int32 vehicle_id = 1;                     // 目标车id
+        float headway = 2;                        // 两车时距=距离/自车速度
+        int32 warning_level = 3;                  // 告警级别， -1-NoCar, 0-alert none, 1-hmw level 1, 2-hmw level
+        int32 fcw = 4;                            // FCW前向碰撞告警，第0位代表状态，第1位代表状态change
+        int32 ufcw = 5;                           // UFCW前向碰撞告警，第0位代表状态，第1位代表状态change
+        int32 headway_warning = 6;                // HWD时距告警，第0位代表状态，第1位代表状态change
+        int32 vb_warning = 7;                     // VB虚拟保险杠告警,第0位代表状态，第1位代表状态change
+        int32 sag_warning = 8;                    // SAG前车后启告警,第0位代表状态，第1位代表状态change
+    }
+
+    message VehicleState {
+        int32 fcw_state = 1;                      // 0:unavailable state, 1:off, 2:standby, 3:active, 7:not available
+        int32 hmw_state = 2;                      // 0:unavailable state, 1:off, 2:standby, 3:active, 7:not available
+    }
+
+	uint64 frame_id = 1;                          // 帧ID
+	uint64 timestamp = 2;                         // 时戳
+	repeated VehicleMeasureRes vehicle_list = 3;  // 车辆信息
+    VehicleWarning vehicle_warning = 4;           // 告警信息
+    VehicleState state = 5;                       // 算法状态
+	minieye.DataSource data_source = 10;          // 描述数据源
+}

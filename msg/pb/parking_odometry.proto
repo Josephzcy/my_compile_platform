@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+// VERSION
+// 0.1
+package minieye.parking;
+
+/*
+       {
+           "topic": "parking_odometry",
+           "dds_mode": "shm",
+           "data_refresh_rate": 100,
+           "buff_num": 10,
+           "elem_max_size": 1000
+       }
+*/
+
+message Point3d {
+  double x = 1;  
+  double y = 2;  
+  double z = 3;  
+}
+
+message Pose6d {
+  double x = 1;  //  [x, y, z] [meter, meter, meter] [roll, pitch, yaw] [rad, rad, rad] intrinsic sequence [z y x]  in world coordinate (East/North/Up)
+  double y = 2;  
+  double z = 3;  
+  double roll = 4;  
+  double pitch = 5;  
+  double yaw = 6;  
+}
+
+message Quaternion {
+  double qx = 1;// in world coordinate (East/North/Up)
+  double qy = 2;
+  double qz = 3;
+  double qw = 4;
+}
+
+message Odometry {
+  uint64 timestamp = 1;            // 管理面时间戳 us
+  uint64 tick = 2;                 // 数据面时间戳 us
+  uint64 frame_id = 3;             // 帧ID
+  Pose6d pose = 4;                 // 位姿
+  Quaternion orientation = 5;      // 四元数旋转 
+  Point3d velocity = 6;            // 基于里程计坐标系速度 m/s 
+  double distance = 7;             // 里程 m
+  Point3d linear_acceleration = 8; // 基于车体坐标系线加速度 m/s2 
+  Point3d angular_velocity = 9;    // 基于车体坐标系角速度 rad/s 
+  uint32 state = 10;               // 里程计状态 0：不可用 1：最差（bias经验值）2：较差（bias上次标定）3:最好（bias动态标定）
+}

@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package minieye;
+
+/*
+{
+  "topic": "avm_settings",
+  "dds_mode": "shm",
+  "buff_num": 20,
+  "elem_max_size": 1024
+}
+*/
+message AVMSettings {
+  enum SettingType {
+    AVM_OP_VIEW_DVR_SW = 0; //0x0:No_Req 0x1:OpenAVM 0x2:OpenDVR 0x3:Startup_Close
+
+    // 屏幕点击位置
+    BtnPressInputValueX = 1; //0..4095 pixel
+    BtnPressInputValueY = 2; //0..4095 pixel
+    TouchEvt = 3; //0x0:Not active 0x1:Press down 0x2:Moving 0x3:Lift up
+
+    // 显示模式
+    // 0x0: No display
+    // 0x1: TV+2D front view
+    // 0x2: TV+2D rear view
+    // 0x3: TV+2D left view
+    // 0x4: TV+2D right view
+    // 0x5: 2D front wide view
+    // 0x6: 2D rear wide view
+    // 0x7: TV+3D front view
+    // 0x8: TV+3D rear view
+    // 0x9: TV+3D left view
+    // 0xA: TV+3D right view
+    // 0xB: TV+3D left front view
+    // 0xC: TV+3D right front view
+    // 0xD: TV+3D left rear view
+    // 0xE: TV+3D right rear view
+    // 0xF: TV+3D free slide view
+    // 0x10: TV+front zoom view
+    // 0x11: TV+rear zoom view
+    // 0x12: Calibration Mode 标定模式
+    // 0x13: Left Right view 左右同现
+    // 0xD1: 左转向时，左后视角，摄像机向前移动，画面后拉
+    // 0xE1: 右转向时，右后视角，摄像机向前移动，画面后拉
+    AVMViewModeSwitch = 4;
+
+    // 车牌信息，取值范围：0..63
+    LicensePlate1 = 5; // 牌照省份
+    LicensePlate2 = 6; // 城市代号
+    LicensePlate3 = 7;
+    LicensePlate4 = 8;
+    LicensePlate5 = 9;
+    LicensePlate6 = 10;
+    LicensePlate7 = 11;
+    LicensePlate8 = 12;
+
+    AVMTransparentHoodSwitch = 13; // 透明底盘开关 0x0: OFF 0x1: ON
+
+    AVMTrailSwitch = 14; // 动态轨迹线开关 0x0: OFF 0x1: ON
+
+    Language = 15; // 设置语言 0x0:NO_Req 0x1:Chinese 0x2:English 0x3:Arabic 0x4:Spanish
+
+    RadarWarining = 16; // 显示雷达盾牌开关 0x0: BOTH OFF  0x1: FRONT ON  0x2: REAR ON  0x3: BOTH ON
+
+    Transparency = 17; // 透明度设置 10..100 0xFF failure
+
+    LicensePlate = 18; // 车牌号设置开关 0x0:NO_Req 0x1:ON 0x2:OFF
+
+    GuideLine = 19; // 动态引导线设置开关 0x0:NO_Req 0x1:ON 0x2:OFF
+
+    AVMCalibrationReq = 20; // 标定请求 0x0: NO_Req 0x1: Request calibration 0x2: Enter calibration 0x3: Exit calibration
+
+    RCTAWarningLeft = 21; // 0x0:No_Warning 0x1:Warning
+
+    RCTAWarningRight = 22; // 0x0:No_Warning 0x1:Warning
+
+    LHTurnlightSts = 23; // 左转灯实时状态 0x0:Off 0x1:Active
+
+    RHTurnlightSts = 24; // 右转灯实时状态 0x0:Off 0x1:Active
+
+    APAStatus = 25; // APA状态 0x0:Off 0x1:Active
+
+    
+  }
+	map<int32, int32> settings = 1; // pair : <SettingType, value> 设置信号
+	uint64 timestamp = 2; // 时戳, milliseconds
+	uint64 tick = 3; // 异构设备上的时钟
+}
+

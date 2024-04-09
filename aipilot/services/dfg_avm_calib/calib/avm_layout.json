@@ -1,0 +1,26 @@
+﻿{
+  "calib_method": 1,
+  "layout": 1,
+  "common_type": {
+    "checker_dw": 0.200,
+    "checker_dh": 0.200,
+    "vert_num": 4,
+    "horize_num": 6,
+    "w": 2.955,
+    "h": 6.270,
+    "d": 0.650,
+    "v": 2.340
+  },
+  "jx65_type": {
+    "checker_dw": 0.200,
+    "checker_dh": 0.200,
+    "vert_num": 4,
+    "horize_num": 6,
+    "w": 2.25,
+    "h": 5.36,
+    "d": 0.39362,
+    "v": 1.7,
+    "w1": 0.2,
+    "w2": 1.18
+  }
+}

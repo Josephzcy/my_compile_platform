@@ -1,0 +1,77 @@
+syntax = "proto3";
+package perception;
+import "geometry.proto";
+
+
+
+//坐标系：传感器原点，车头向前为x，左为y
+message lidarFrame {  
+    message Rect3D{
+        perception.common.Point3D center = 1;
+        perception.common.Point3D center_std_dev = 2;
+        perception.common.Point3D size_lwh = 3;
+        perception.common.Point3D size_std_dev = 4;
+        repeated perception.common.Point3D corners = 5;
+        float orientation = 6;
+        float orientation_std_dev = 7;
+
+    }                            
+    message SingleLidarTarget {
+        //id
+        uint32 id = 1;                                  // 目标ID
+
+        /*
+        UNKNOWN=0;未知障碍物类型;
+        UNKNOWN_UNMOVABLE=1;未知静止障碍物类型
+        PEDESTRIAN=2;行人
+        BICYCLE=3;自行车
+        VEHICLE=4;车辆
+        MOTORCYCLE=5;摩托车
+        TRICYCLE=6;三轮车
+        CONE=7;锥筒
+        */
+        uint32 cls = 2;
+
+        /*
+        0-UNKNOWN
+        1-MOVING_EGODIRECTION_DRIVING
+        2-MOVING_EGODIRECTION_STOPPED
+        3-MOVING_EGODIRECTION_REVERSING
+        4-MOVING_ONCOMING
+        5-MOVING_CROSSING
+        6-STATIONARY
+        */
+        uint32 moving_state = 3;
+
+        /*
+        1-New Created
+        2-Coasted
+        3-Merge
+        4-Tracked
+        */
+        uint32 track_state = 4;
+
+        /*
+        0~100
+        */
+        float confidence = 5;
+
+        //0~100
+        float existence_probability = 6;
+
+        Rect3D rect = 7;
+
+        perception.common.Point3D velocity = 8;
+
+        repeated perception.common.Point3D contour_points = 9;
+
+        //单位：微秒
+        uint64 time_creation = 10; 
+    }    
+    uint32 seq = 1;
+    uint64 tick = 2;//异构设备时间，单位毫秒
+    uint64 timestamp = 3;//utc时间，单位微秒
+    repeated SingleLidarTarget lidar_meas = 4;
+    bool is_valid = 5;
+    uint32 lidar_state = 6;
+}

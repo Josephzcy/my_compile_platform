@@ -1,0 +1,144 @@
+syntax = "proto3";
+
+package minieye;
+
+/*
+    {
+        "topic": "apa_state_control",
+        "dds_mode": "shm",
+        "buff_num": 20,
+        "elem_max_size": 1024
+    }
+*/
+
+message APAStateControl
+{
+    // HMI交互信息
+    enum SettingType
+    {
+        APA_Slot_Chosen       = 0;  // 有效值是： 0-10000, 无效：-1
+        APA_PullOut_Option    = 1;  // 泊出选项： 0x0:default, 0x1:full, 0x2:half
+        APA_PullOut_Direction = 2;  // 泊出方向： 0x0:default, 0x1:left out, 0x2:right out
+        APA_ParkIn_Direction  = 3;  // 泊入方向： 0x0:default, 0x1:tail in, 0x2:head in
+        Shake_hand            = 4;  // 握手信号： 0x0:not shake hand, 0x1:request, 0x2:active, 0x3:success
+        APA_HMI_Info          = 5;  // apa提醒信息： 0x0:default, 0x1:请释放电子手刹， 0x2:车辆被接管
+        Plan_type             = 6;  // 规划方法： 0x0:default(规划默认方法), 0x1:搜索法， 0x2:几何法
+        Park_Active           = 7;  // 泊车模式激活反馈： 0x0:not active, 0x1:active
+        Park_Status           = 8;  // 泊车功能激活反馈： 0x0:default, 0x1:APA park in, 0x2:APA park out, 0x3:free park in, 0x4:VTR, 0x5:RPA park in, 0x6: RPA park out, 0x14: havp
+        Park_Button_Available = 9;  // 泊车开关是否有效： 0x0:unavailable, 0x1:available
+        Park_Out_Available    = 10; // 是否可泊出: 0x0:unavailable, 0x1:available
+        APA_Search_Display    = 11; // 泊车功能搜索状态提示: 0x0:no display 0x1:Keep moving and choose searching side 0x2:wait for choose direction for parking out 0x3:waiting for slow down
+                                                        // 0x4: Excessive ramp,function unavailable, 0x5: not satisfy park out condition, 0x6: disconnect charging gun
+                                                        // 0x7: please locked free parking slot, 0x8: no VTR valid path, 0x9: memorized VTR path, 0xA: waiting for connect phone
+                                                        // 0xB: waiting for vehicle ready, 0xC: TPMS error，system unavailable, 0xD: slot found and stop
+                                                        // 0xE: wait for close DriverDoor, 0xF: wait for close PsngrDoor, 0x10: wait for close RHRDoor, 0x11: wait for close LHRdoor
+                                                        // 0x12: wait for close Hood, 0x13: wait for close Trunk, 0x14: path plan failure, 0x15: please shift to P gear and stop
+                                                        // 0x16: please exit R gear, 0x17: please release EPB, 0x18: release parking in button, 0x19: release parking out button
+                                                        // 0x1A: release free parking button, 0x1B: release VTR button, 0x1C: please faten the seat belt
+        APA_Planning_Display  = 12; // APA路径规划状态提示: 0x0: no display, 0x1: planning, 0x2: park in plan failure, 0x3: park in plan success, 0x4: wait for close door
+                                                        // 0x5: wait for close hood, 0x6: wait for close trunk, 0x7: parking out plan failure, 0x8: parking out plan success
+                                                        // 0x9: waiting for vehicle stop
+        Shakehand_Display     = 13; // 泊车功能线控请求状态提示: 0x0: no display, 0x1: apply brake, 0x2: wait for release brake, 0x3: please shift to P gear and close all door
+        APA_Active_Display    = 14; // 泊车功能激活状态提示: 0x0: no display, 0x1: pay attention to environment, 0x2: parking in finished, 0x3: parking out finished,
+                                                        //0x4: keep APP UI in screenful status, 0x5: recheck car locked, 0x6: VTR finish
+        APA_Suspend_Display   = 15; // 泊车功能暂停状态提示: 0x0: no display, 0x1: APP status not satisfy, 0x2: EPB active，please release, 0x3: release brake, 0x4: any door open, 0x5: hood open
+                                                        // 0x6: trunk open, 0x7: obstacle on path, 0x8: resume button active, 0x9: restore bluetooch connection
+        APA_Terminate_Display = 16; // 泊车功能不可恢复结束状态提示: 0x0: no display, 0x1: parking fault, 0x2: functional conflict, 0x3: step on gas pedel, 0x4: manual steering
+                                                                // 0x5: gear intervene, 0x6: request fold mirrors, 0x7: park over speed, 0x8: park time out, 0x9: excessive park
+                                                                // 0xA: drive mode conflict, 0xB: excessive suspend, 0xC: suspend timeout, 0xD: call active timeout
+                                                                // 0xE: TPMS error, 0xF: Bluetooth data invalid
+        Failure_Display       = 17; // 泊车功能故障状态提示: 0x0: no display, 0x1: sensor error, 0x2: park system error, 0x3: actuator error
+        VTR_Planning_Display  = 18; // VTR路径规划状态提示: 0x0: no display， 0x1: planning， 0x2: planning failure， 0x3: planning success
+        VTR_Active_Display    = 19; // VTR泊车激活状态提示: 0x0: no display, 0x1: VTR active, 0x2: VTR finished
+        VTR_Terminate_Display = 20; // VTR不可恢复结束状态提示: 0x0: no display, 0x1: VTR fault, 0x2: step on gas pedel, 0x3: manual steering, 0x4: gear intervene, 0x5: request fold mirrors,
+                                                            // 0x6: park over speed, 0x7: park time out, 0x8: drive mode conflict
+        RPA_phone_active      = 21; // RPA手机端弹窗激活反馈： 0x0: not active, 0x1: active
+    }
+
+    enum ApStateManagerType
+    {
+        // 泊车状态
+        ApaInit       = 0;  // 初始化状态
+        ApaStandby    = 1;  // 常态
+        ApaSearching  = 2;  // 车位搜索状态
+        ApaActive     = 3;  // 激活状态
+        ApaSuspend    = 4;  // 暂停状态
+        ApaOff        = 5;  // 行车状态
+        ApaFailure    = 6;  // 故障状态
+        ApaFinish     = 7;  // 泊车正常结束状态
+        ApaShakehand  = 18; // 泊车线控请求状态
+        ApaPlanning   = 19; // 规划状态
+        ApaTerminated = 20; // 不可恢复结束状态
+
+        // HAVP相关状态
+        HavpStandby    = 40;  // 常态
+        HavpLearning   = 41;  // 建图状态
+        HavpReady      = 42; // 准备状态
+        HavpShakehand  = 43; // 横纵控制手握状态
+        HavpControl    = 44; // 自动驾驶状态
+        HavpSuspend    = 45; // 巡迹暂停状态
+        HavpFinish     = 46; // 巡迹完成状态（到达巡迹终点）
+        HavpStop       = 47; // 巡迹过程紧急停止状态
+        HavpOff        = 48; // HAVP关闭状态
+        HavpFailure    = 49; // HAVP故障状态
+        HavpDecelerate = 50; // 巡迹减速停车状态
+    }
+
+    //建图信号透传
+    enum ApMapResponseType
+    {
+        kChooseMap = 0;
+
+        kParkingMappingReadyToMapping = 1; // 建图ok
+        kParkingMapping = 2; // 真正的建图状态
+        kParkingMappingDone = 3; // 藏起来的挂起状态
+        kParkingMappingFailed = 4; // 藏起来的挂起状态
+
+        kParkingLocalizationReadyToMapping = 5; // 建图ok，匹配ok，
+        kParkingLocalizationReadyToLocalization = 6; // 建图ok，匹配ok，过了建图开始的点
+        kParkingLocalization = 7; // 真正的定位状态
+        kParkingLocalizationOutOfMap = 11;
+        kParkingLocalizationDone = 8; // 藏起来的挂起状态
+        kParkingLocalizationFailed = 9; // 藏起来的挂起状态
+
+        kBackToGround = 10; // 藏起来的挂起状态，代表回到地面但是未走足够的距离
+    }
+
+    enum FailReason
+    {
+        kNotFail        = 0; // 无异常
+        kBackwardTooFar = 1; // 倒车距离过长失败
+        kSpeeding       = 2; // 超速时间过长失败
+    }
+
+    enum ReminderType
+    {
+        HmiReminderNone         = 0;    // 无提醒
+        HmiOverSpeed            = 1;    // 超速提醒：车速高于15km/h
+        HmiCross                = 2;    // 巡迹中前方有路口
+        HmiTurn                 = 3;    // 巡迹中前方有弯道
+        HmiPedestrian           = 4;    // 巡迹中前方有行人
+    }
+
+    enum HmiConditionType
+    {
+        HmiConditionNone        = 0;    // 无跳转
+        HmiTriggerParking       = 1;    // 触发泊车功能
+        HmiTriggerManualParking = 2;    // 触发手动泊车
+        HmiReadyToReachPathEnd  = 3;    // 巡迹中即将到达车位
+        HmiReadyToApa           = 4;    // 巡迹中即将泊入车位
+        HmiVehicleStop          = 5;    // 车辆静止
+    }
+
+    map<int32, int32> settings             = 1;  // pair : <SettingType, value> 设置信号
+    uint32 state    		               = 2;  // 详见ApStateManagerType, 不包括18-19和havp相关状态
+    uint64 timestamp                       = 3;  // 时戳, microsecond(us)
+    uint64 tick                            = 4;  // 异构设备上的时钟(us)
+    uint32 pilot_apa_mode                  = 5;  // 行泊状态指示 0:initial 1:pilot 2:apa
+    ApMapResponseType ap_map_response_type = 6;  // 建图状态
+    ApStateManagerType APA_state_to_hmi    = 7; // 详见ApStateManagerType，不包括havp相关状态
+    FailReason ap_map_response_fail_reason = 8;  // 建图失败原因
+    ReminderType hmi_reminder_type         = 9;  // HMI界面提醒
+    HmiConditionType hmi_condition_type    = 10;  // HMI界面跳转条件
+    uint32 HmiVehicleOnTrack               = 11; // 是否在轨迹上 0x0:off 0x1:on track 0x2:not on track
+}

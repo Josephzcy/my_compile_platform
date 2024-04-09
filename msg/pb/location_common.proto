@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package location;
+
+message HafTime {                               // 时间戳结构体
+    uint32 sec = 1;                             // 秒
+    uint32 nsec = 2;                            // 纳秒
+}
+
+message HafHeader {                             // 通用数据帧头信息
+    uint32 seq = 1;                             // 序号
+    string frame_id = 2;                        // 帧名称
+    HafTime timestamp = 3;                      // 时间戳
+    HafTime gnss_stamp = 4;                     // GNSS卫星时间戳
+}
+
+message Point3d {                               // 三维变量结构体（double）
+    double x = 1;                               // x轴
+    double y = 2;                               // y轴
+    double z = 3;                               // z轴
+}
+
+message Point3f {                               // 三维变量结构体（float）
+    float x = 1;                                // x轴
+    float y = 2;                                // y轴
+    float z = 3;                                // z轴
+}
+
+message HafQuaternion {                         // 四元数结构体（Hamilton）
+    double x = 1;                               // 四元数矢量部分x
+    double y = 2;                               // 四元数矢量部分y
+    double z = 3;                               // 四元数矢量部分z
+    double w = 4;                               // 四元数标量部分w
+}

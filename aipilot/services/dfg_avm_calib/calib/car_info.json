@@ -1,0 +1,13 @@
+﻿{
+    "car_length": 4.5970,
+    "car_width": 1.904,
+    "car_front_wheelspan": 1.610,
+    "car_rear_wheelspan": 1.615,
+    "car_wheelbase": 1.14925,
+    "car_wheelwidth": 0,
+    "car_front_overhang": 1.14925,
+    "car_front_blend": 0.10,
+    "car_rear_blend": 0.10,
+    "car_left_blend": 0.10,
+    "car_right_blend": 0.10
+}

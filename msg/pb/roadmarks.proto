@@ -1,0 +1,48 @@
+syntax = "proto3";
+import "geometry.proto";
+package perception;
+
+/*
+{
+    "topic": "post_roadmarks",
+    "dds_mode": "shm",
+    "data_refresh_rate": 20,
+    "buff_num": 10,
+    "elem_max_size": 50000 
+}
+*/
+
+enum PContourType{
+    PLANE = 0;                               // 车道线
+    PBUMP = 1;                               // 减速带
+    PARROW = 2;                              // 箭头
+    PUNKNOWN = 3;
+}
+
+enum PObjCamNum{
+    PLEFT = 0;
+    PRIGHT = 1;
+    PFRONT = 2;
+    PREAR = 3;
+}
+
+message KeyPt {
+    perception.common.Point2D img_pt = 1;
+    perception.common.Point3D veh_pt = 2;
+    perception.common.Point3D odom_pt = 3;      // odom坐标系下的物理坐标（m）
+}
+
+
+message ObjContourPoints {
+    uint32 id = 1;
+    PContourType contour_type = 2;
+    PObjCamNum obj_cam_num = 3;
+    repeated KeyPt key_pts = 4;
+}
+
+message Roadmarks {
+    uint64 frame_id = 1;
+    uint64 timestamp = 2;                   // 管理面时间(us)
+    uint64 tick = 3;                        // 数据面时间(us)
+    repeated ObjContourPoints contours = 4;    // 轮廓集合
+}

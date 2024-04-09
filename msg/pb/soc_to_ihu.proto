@@ -1,0 +1,87 @@
+syntax = "proto3";
+// VERSION
+// 0.1
+package minieye;
+
+/*
+       {
+           "topic": "soc_to_ihu",
+           "dds_mode": "shm",
+           "data_refresh_rate": 20,
+           "buff_num": 20,
+           "elem_max_size": 1024
+       }
+*/
+
+message SocToIHU
+{
+  uint32 FaultStatusCameraFront     = 1; //前摄像头故障_正常 0x0:Normal 0x1:Failure
+  uint32 FaultStatusCameraLeft      = 2; //左摄像头故障_正常 0x0:Normal 0x1:Failure
+  uint32 FaultStatusCameraRear      = 3; //后摄像头故障_正常 0x0:Normal 0x1:Failure
+  uint32 FaultStatusCameraRight     = 4; //右摄像头故障_正常 0x0:Normal 0x1:Failure
+  uint32 AVMFuncSts                 = 5; //AVM当前功能状态 0x0:Default 0x1:Off 0x2:Active 0x3:Failure 0x4:APA 0x5:RPA
+  
+  /*
+    0x0:Default
+    0x1:Enter by button/sound
+    0x2:Enter by R gear
+    0x3:Enter by turning light
+    0x4:Enter by steering angel
+    0x5:Enter by PDC
+    0x6~0x7:Reserved
+    0x8:Exit by button/sound
+    0x9:Exit by system failure
+    0xA:Exit by over speed
+    0xB:Exit by other Gears 15s
+    0xC:Exit by other functions
+  */
+  uint32 AVMActDeactDisplay         = 6; //AVM激活和退出条件
+
+  /*
+    0x0:NO_Req
+    0x1:BEV+2D view
+    0x2:BEV+3D view
+    0x3:front wide view
+    0x4:rear wide view
+    0x5:BEV + left right view
+  */
+  uint32 AVMDisplayMode             = 7; //AVM当前显示功能模式
+
+  /*
+    0x0:Default
+    0x1:Calibration start allowed
+    0x2:Calibration start not allowed
+    0x3:Calibration start
+    0x4:Calibration success
+    0x5:Calibration failure
+    0x6:Calibration stop allowed
+    0x7:Calibration stop not allowed 
+  */
+  uint32 AVMCalibrationState        = 8; //AVM标定状态
+  
+  uint32 SetTurnIndicationFeedback  = 9; //按键反馈 0x0:On 0x1:Off 0x2:Failure 0x3:Reserved
+  uint32 SetBodyColorFeedback       = 10; //车身颜色设置按键反馈
+  uint32 SetAutoZoomFeedback        = 11; //自动放大视图按键反馈 0x0:On 0x1:Off 0x2:Failure 0x3:Reserved
+  uint32 SetPDCTriggerFeedback      = 12; //PDC激活按键反馈 0x0:On 0x1:Off 0x2:Failure 0x3:Reserved
+  uint32 SetTransparencyFeedback    = 13; //车身透明度按键反馈 0x0:Failure valid range:10..100
+  uint32 SetAutoExitFeedback        = 14; //自动退出按键反馈 0x0:On 0x1:Off 0x2:Failure 0x3:Reserved
+  uint32 SetLicensePlateFeedback    = 15; //车辆牌照按键反馈 0x0:On 0x1:Off 0x2:Failure 0x3:Reserved
+  uint32 SetGuideLineFeedback       = 16; //动态引导线按键反馈 0x0:On 0x1:Off 0x2:Failure 0x3:Reserved
+  uint32 SetFactoryDefaultFeedback  = 17; //恢复出厂设置按键反馈 0x0:On 0x1:Off 0x2:Failure 0x3:Reserved
+  uint32 SetRadarWariningFeedback   = 18; //显示雷达盾牌按键反馈 0x0:On 0x1:Off 0x2:Failure 0x3:Reserved
+  uint32 SetSteeringWheelFeedback   = 19; //方向盘转角激活按键反馈 0x0:On 0x1:Off 0x2:Failure 0x3:Reserved
+  
+  /*
+    0x0:Failure
+    0x1:Chinese
+    0x2:English
+    0x3:Arabic
+    0x4:Spanish
+  */
+  uint32 SetLanguageFeedback        = 20; //语言设置按键反馈 
+  uint32 TransparentHoodSwFeedback  = 21; //透明底盘按键反馈 0x0:On 0x1:Off 0x2:Failure 0x3:Reserved
+  uint32 TrailSwFeedback            = 22; //车辙线按键反馈 0x0:On 0x1:Off 0x2:Failure 0x3:Reserved
+
+  uint64 timestamp = 23; // 时戳, milliseconds
+  uint64 tick = 24; // 异构设备上的时钟
+}

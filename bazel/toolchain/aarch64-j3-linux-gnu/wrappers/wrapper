@@ -1,0 +1,7 @@
+#!/bin/bash
+ 
+NAME=$(basename "$0")
+#TOOLCHAIN_BINDIR=/opt/toolchains/J3/gcc-linaro-6.5.0-2018.12-x86_64_aarch64-linux-gnu/bin
+TOOLCHAIN_BINDIR=external/aarch64-j3-linux-gnu/bin
+
+exec "${TOOLCHAIN_BINDIR}"/"${NAME}" "$@"

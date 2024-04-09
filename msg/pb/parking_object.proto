@@ -1,0 +1,276 @@
+syntax = "proto3";
+
+// VERSION
+// 0.2
+package minieye.parking;
+
+/*
+{
+    "topic": "parking_object",
+    "dds_mode": "shm",
+    "data_refresh_rate": 20,
+    "buff_num": 8,
+    "elem_max_size": 8000
+},{
+    "topic": "parking_track",
+    "dds_mode": "shm",
+    "data_refresh_rate": 20,
+    "buff_num": 8,
+    "elem_max_size": 15000
+},{
+    "topic": "parking_target",
+    "dds_mode": "shm",
+    "data_refresh_rate": 20,
+    "buff_num": 8,
+    "elem_max_size": 15000
+}
+*/
+
+message Point2f {
+  float x = 1;
+  float y = 2;
+}
+
+message Point3f {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+// 目标检测分类
+enum ObjectType {
+  kNone = 0;     // None
+  kVehicle = 1;  // 车辆
+  kWheelTwo = 2; // 二轮车
+  kRider = 3;    // 骑行人
+  kPed = 4;      // 行人
+  kCone = 5;     // 锥筒/防撞桶
+  kWsign = 6;    // 三角警示牌/禁停标志
+  kStone = 7;    // 石墩/柱形石墩
+  kPiles = 8;    // 铁地桩/塑料地桩
+  kLock = 9;     // 地锁上锁
+  kPillar = 10;  // 柱子
+}
+
+// 相机的ID
+enum CameraId {
+  kCameraNone = 0;      // None
+  kFisheyeFront = 1;    // 鱼眼 前视
+  kFisheyeRear = 2;     // 鱼眼 后视
+  kFisheyeLeft = 3;     // 鱼眼 左视
+  kFisheyeRight = 4;    // 鱼眼 右视
+  kMainFront = 5;       // 针孔 前视
+  kFrontSideLeft = 6;   // 针孔 左前视
+  kFrontSideRight = 7;  // 针孔 右前视
+}
+
+// DEPRECATED
+message ObjectV1 {
+  ObjectType type = 1;  // 物体分类
+  Point2f locate = 2;   // 坐标信息（m）
+  Point2f size = 3;     // 长宽信息（m）
+  float rotation = 4;   // 旋转信息（rad）
+}
+
+// DEPRECATED
+message ObjectListV1 {
+  uint64 frame_id = 1;   // 帧ID
+  uint64 timestamp = 2;  // 管理面时间戳 us
+  uint64 tick = 3;       // 数据面时间戳 us
+
+  repeated ObjectV1 list = 4;  // object list
+}
+
+// DEPRECATED
+message Co3Point2f {
+  Point2f image_pt = 1;    // 图像坐标（pixel）
+  Point2f vehicle_pt = 2;  // 车身坐标系下的物理坐标（m）
+  Point2f odom_pt = 3;     // odom坐标系下的物理坐标（m）
+}
+
+// DEPRECATED
+message Co3Point1f {
+  float image_pt = 1;    // 图像坐标系下的值
+  float vehicle_pt = 2;  // 车身坐标系下的值
+  float odom_pt = 3;     // odom坐标系下的值
+}
+
+// DEPRECATED
+message Co2Point2f {
+  Point2f image_pt = 1;    // 图像大小（pixel）
+  Point2f vehicle_pt = 2;  // 物理大小（m）
+}
+
+// DEPRECATED
+message ObjectTrackV1 {
+  Co3Point2f locate = 1;      // 位置信息
+  Co3Point2f pre_locate = 2;  // 预测位置信息
+
+  Co3Point1f rotation = 3;  // 旋转信息（车辆）
+
+  Co3Point2f velocity = 4;  // 速度信息
+
+  Co2Point2f size = 5;  // 车辆的长宽（车辆）
+
+  uint32 id = 6;  // ID
+}
+
+// DEPRECATED
+message ObjectTrackListV1 {
+  uint64 frame_id = 1;   // 帧ID
+  uint64 timestamp = 2;  // 管理面时间戳 us
+  uint64 tick = 3;       // 数据面时间戳 us
+
+  repeated ObjectTrackV1 vehicles = 4;     // 车辆信息
+  repeated ObjectTrackV1 pedestrians = 5;  // 行人信息
+  repeated ObjectTrackV1 cones = 6;        // 锥筒信息
+}
+
+message ObjectBev {
+  ObjectType type = 1;  // 物体分类
+  Point2f locate = 2;   // 坐标信息（m）
+  Point2f size = 3;     // 长宽信息（m）
+  float yaw = 4;        // 旋转信息（rad）
+}
+
+message Detect2dData {  // 2d检测框信息
+  Point2f LUPoint = 1;  // 检测框左上点
+  Point2f RDPoint = 2;  // 检测框右下点
+}
+
+message Detect3dData {  // 3d检测框信息
+  Point3f center = 1;   // 检测框中心点
+  Point3f boxsize = 2;  // 检测框的长、宽、高信息
+  float yaw = 3;        // 旋转信息
+}
+
+message ObjectMono3d {
+  ObjectType type = 1;    // 物体分类
+  float score = 2;        // 置信度
+  CameraId cameraid = 3;  // obj来自相机的编号
+  Detect2dData box2d = 4;  // 2d检测框信息
+  Detect3dData box3d = 5;  // 3d检测框信息
+}
+
+message ObjectList {
+  uint64 frame_id = 1;   // 帧ID
+  uint64 timestamp = 2;  // 管理面时间戳 us
+  uint64 tick = 3;       // 数据面时间戳 us
+
+  repeated ObjectBev list_object_bev = 4;    // bev object list
+  repeated ObjectMono3d list_object_3d = 5;  // mono3d object list
+}
+
+message ImageInfo {
+  Point2f position_value = 1;     // 位置
+  float heading_value = 2;        // 方向角
+  Point2f size = 3;               // 图像框的长、宽
+}
+
+message VehicleInfo {
+  Point2f position_value = 1;     // 位置
+  Point2f position_variance = 2;  // 位置方差
+  Point2f velocity_value = 3;     // 速度
+  Point2f velocity_variance = 4;  // 速度方差
+  float heading_value = 5;        // 方向角
+  float heading_variance = 6;     // 方向角方差
+  float palstance_value = 7;      // 角速度
+  float palstance_variance = 8;   // 角速度方差
+  Point3f size = 9;               // 长、宽、高
+}
+
+message OdomInfo {
+  Point2f position_value = 1;     // 位置
+  Point2f position_variance = 2;  // 位置方差
+  Point2f velocity_value = 3;     // 速度
+  Point2f velocity_variance = 4;  // 速度方差
+  float heading_value = 5;        // 方向角
+  float heading_variance = 6;     // 方向角方差
+  float palstance_value = 7;      // 角速度
+  float palstance_variance = 8;   // 角速度方差
+  Point3f size = 9;               // 长、宽、高
+}
+
+enum TrackingStatus {
+  kInit = 0;                      // 初始化中
+  kPredict = 1;                   // 预测
+  kTracking = 2;                  // 跟踪
+  kLost = 4;                      // 丢失
+}
+
+enum MotionStatus {
+  kStatic = 0;                    // 静止
+  kStaticToMoving = 1;            // 静止到运动
+  kMovingToStatic = 2;            // 运动到静止
+  kMoving = 3;                    // 运动
+}
+
+message ObjectTrack {
+  uint32 id = 1;  // 目标ID
+  ObjectType type = 2;  // 目标类别
+  TrackingStatus track_status = 3;  // 跟踪状态
+  MotionStatus motion_status = 4;  // 运动状态
+  ImageInfo img_info = 5;  // 图像信息
+  VehicleInfo vehicle_info = 6;  // 车辆坐标系信息
+  OdomInfo odom_info = 7;  // 里程计坐标系信息
+  float score = 8;  // 置信度
+}
+
+message ObjectTrackList {
+  uint64 frame_id = 1;   // 帧ID
+  uint64 timestamp = 2;  // 管理面时间戳 us
+  uint64 tick = 3;       // 数据面时间戳 us
+  repeated ObjectTrack object_track_list = 4;  // 跟踪目标列表
+}
+
+// Debug message of tracker
+message TrackDebug {
+  uint64 frame_id = 1;   // 帧ID
+  uint64 timestamp_us = 2;  // 管理面时间戳
+  uint64 tick_us = 3;       // 数据面时间戳
+
+  TrackEgoState ego_state = 4;
+  TrackEgoState ego_cov = 5;
+  repeated TrackDebugObject objects = 6;
+}
+
+message TrackDebugObject {
+  uint32 id = 1;
+  ObjectType type = 2;
+  repeated ObjectMono3d detections = 3;
+  repeated TrackModel models = 4;
+}
+
+enum TrackModelType {
+  kTrackModelCV = 0;
+  kTrackModelZV = 1;
+  kTrackModelCA = 2;
+  kTrackModelCTRV = 3;
+  kTrackModelCTRA = 4;
+}
+
+message TrackMixTargetState {
+  float x_v_vt = 1;
+  float y_v_vt = 2;
+  float psi_vt = 3;
+  float w_gt = 4;
+  float v_gt = 5;
+  float a_gt = 6;
+}
+
+message TrackEgoState {
+  float dx_m = 1;
+  float dy_m = 2;
+  float dyaw_rad = 3;
+}
+
+message TrackModel {
+  TrackModelType type = 1;
+  float prob = 2;
+
+  TrackMixTargetState prior_state = 3;
+  TrackMixTargetState prior_cov = 4;
+
+  TrackMixTargetState posterior_state = 5;
+  TrackMixTargetState posterior_cov = 6;
+}

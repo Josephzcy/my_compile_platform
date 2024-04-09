@@ -1,0 +1,49 @@
+syntax = "proto3";
+// VERSION
+// 0.1
+package minieye.parking;
+
+/*
+       {
+           "topic": "ap_map_status",
+           "dds_mode": "shm",
+           "data_refresh_rate": 100,
+           "buff_num": 10,
+           "elem_max_size": 1000
+       }
+*/
+
+
+
+message ApMapStatus {
+  message Pose {
+    double x = 1;  //  [x, y, z] [meter, meter, meter] [roll, pitch, yaw] [rad, rad, rad] intrinsic sequence [z y x]  in world coordinate (East/North/Up)
+    double y = 2;  
+    double z = 3;  
+    double qw = 4;  
+    double qx = 5;  
+    double qy = 6;  
+    double qz = 7;  
+  }
+  message Map {
+    map<int64, Pose> joints = 1; // joint id, joint pose
+  };
+  message JointMatch {
+    int64 rt_joint_id = 1;
+    int64 ap_joint_id = 2;
+  };
+  
+  message SemanticMatch {
+    Pose ap_point = 1;  // ap map 点坐标
+    Pose rt_point = 2;  // rt map 点坐标
+  };
+
+  uint64 timestamp = 1;            // 管理面时间戳 us
+  uint64 tick = 2;                 // 数据面时间戳 us
+  uint64 frame_id = 3;             // 帧ID
+  Map rt_map = 4;
+  Map ap_map = 5;
+  repeated JointMatch joint_match = 6;
+  repeated SemanticMatch semantic_match = 7;
+  repeated Pose odom_points = 8;
+}

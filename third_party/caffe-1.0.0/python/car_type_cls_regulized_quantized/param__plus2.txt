@@ -1,0 +1,9 @@
+name:_plus2
+type:EltwiseRistretto
+operation_type:1
+bw_layer_in:16
+bw_layer_out:16
+bw_params:16
+fl_layer_in:8
+fl_layer_out:8
+fl_params:9

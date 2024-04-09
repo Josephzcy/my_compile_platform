@@ -1,0 +1,69 @@
+syntax = "proto3";
+import "geometry.proto";
+import "data_source.proto";
+package perception;
+
+// topic : "uss_parkingspace", "cus_parkingspace", "vis_parkingspace", "vis_parkingspace_to_ui", "parkingspace", "parkingspace_to_ui"
+
+message CornerPt {
+    uint32 id = 1;                              // 角点索引
+    perception.common.Point2D image_pt = 2;     // 图像坐标 (pixel)
+    perception.common.Point2D vehicle_pt = 3;   // 车身坐标系下的物理坐标（m）
+    perception.common.Point2D odom_pt = 4;      // odom坐标系下的物理坐标（m）
+}
+
+message RodPt {
+    uint32 id = 1;                              // 档杆索引
+    perception.common.Point2D image_pt = 2;     // 图像坐标 (pixel)
+    perception.common.Point2D vehicle_pt = 3;   // 车身坐标系下的物理坐标（m）
+    perception.common.Point2D odom_pt = 4;      // odom坐标系下的物理坐标（m）
+}
+
+message ParkingSlot {
+    enum ParkSlotType {
+        kUnknown = 0;                           // 未知车位
+        kVerticalSpot = 1;                      // 垂直车位
+        kHorizontalSpot = 2;                    // 水平车位
+        kObliqueSpot = 3;                       // 斜车位
+    }
+    enum SearchStage {
+        kSsDefault = 0;                           // 默认值
+        kSsDiscontent = 1;                        // 不满足几何条件约束的车位
+        kSsFront = 2;                             // （满足几何条件约束的）前方车位
+        kSsSide = 3;                              // （满足几何条件约束的）侧向车位
+        kSsRear = 4;                              // （满足几何条件约束的）后方车位
+    }
+    enum ParkingStage {
+        kPsDefault = 0;                           // 默认值
+        kPsDiscontent = 1;                        // 不满足几何条件约束的车位
+        kPsOutside = 2;                           // 车身在车位外时探测到的车位
+        kPsInside = 3;                            // 车身在车位内时探测到的车位
+        KInsideContinuously = 4;                  //stage5后持续发出车位
+    }
+    enum RodStage {
+        kRsDefault = 0;                           // 默认值
+        kRsDiscontent = 1;                        // 不满足距离条件约束的档杆
+        kRsFar = 2;                               // 远处档杆
+        kRsNear = 3;                              // 较近处档杆
+        kRsClose = 4;                             // 近处档杆
+    }
+    uint32 id = 1;                              // 车位索引
+    repeated CornerPt corner_pts = 2;           // 车位四个角点坐标
+    ParkSlotType type = 3;                      // 车位类型
+    bool occupied = 4;                          // 车位里是否有障碍物
+    double width = 5;                           // 车位宽（m）
+    double length = 6;                          // 车位长 (m)
+    SearchStage search_stage = 7;               // 搜索Stage
+    ParkingStage parking_stage = 8;             // 泊车Stage
+    bool exist_rod = 9;                         // 车位里是否存在限位杆
+    repeated RodPt rod_pts = 10;                // 限位杆两个点坐标
+    RodStage rod_stage = 11;                    // 档杆Stage
+}
+
+message ParkingSpace {
+    repeated ParkingSlot parkslots = 1;         // 车位列表
+    uint64 frame_id = 2;                        // 帧索引
+    uint64 timestamp = 3;                       // 管理面时间 (ms)
+    uint64 tick = 4;                            // 数据面时间 (ms)
+    minieye.DataSource source = 5;              // 数据源（camera, ultra_radar）
+}

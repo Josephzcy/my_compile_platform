@@ -1,0 +1,12 @@
+AUX_SOURCE_DIRECTORY(. SRC_LIST)
+
+ADD_EXECUTABLE(test_msgPacker ${SRC_LIST})
+SET_TARGET_PROPERTIES(test_msgPacker PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TESTS_OUTPUT_PATH}")
+TARGET_LINK_LIBRARIES(test_msgPacker 
+	gtest_main
+	gtest
+    ${Glog_LIBS}
+	pthread
+	)
+
+ADD_TEST(NAME test_msgPacker COMMAND test_msgPacker)

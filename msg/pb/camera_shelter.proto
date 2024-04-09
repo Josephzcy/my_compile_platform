@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package perception;
+
+// {
+//   "topic": "camera_shelter",
+//   "dds_mode": "shm",
+//   "buff_num": 8,
+//   "elem_max_size": 128
+// }
+
+
+message SingleCameraShelter {
+  enum CameraId {
+      kLeft = 0;
+      kRight = 1;
+      kFront = 2;
+      kRear = 3;
+  }
+  CameraId camera_id = 1;                      // 摄像头id
+  int32 up_left_sheltered = 2;                 // 上左是否遮挡
+  int32 up_right_sheltered = 3;                // 上右是否遮挡
+  int32 down_left_sheltered = 4;               // 下左是否遮挡
+  int32 down_right_sheltered = 5;              // 下右是否遮挡
+}
+
+// brief : 摄像头遮挡
+message CameraShelter {
+  uint64 frame_id = 1;                          // 帧ID
+  uint64 timestamp = 2;                         // 管理面时戳
+  uint64 tick = 3;                              // 数据面时戳
+  repeated SingleCameraShelter sheltered = 4;   // 四个摄像头遮挡
+}

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package minieye;
+
+message UltrasonicRadar {
+    float short_radar_fl = 1;      // 前左短距离雷达（UPA）探测距离(cm) (左，左中，右中，右)
+    float short_radar_flm = 2;     // 前左中短距离雷达探测距离 
+    float short_radar_frm = 3;     // 前右中短距离雷达探测距离
+    float short_radar_fr = 4;      // 前右短距离雷达探测距离
+    float short_radar_bl = 5;      // 后左短距离雷达（UPA）探测距离（左，左中，右中，右）
+    float short_radar_blm = 6;     // 后左中短距离雷达探测距离
+    float short_radar_brm = 7;     // 后右中短距离雷达探测距离
+    float short_radar_br = 8;      // 后右短距离雷达探测距离
+    float long_radar_fl = 9;       // 左前长距离雷达（APA）探测距离(cm)
+    float long_radar_fr = 10;       // 右前长距离雷达探测距离
+    float long_radar_bl = 11;       // 左后长距离雷达探测距离
+    float long_radar_br = 12;       // 右后长距离雷达探测距离
+    uint64 timestamp = 13;          // 管理面时间（ms）
+    uint64 tick = 14;               // 数据面时间戳（ms）
+    uint64 frame_id = 15;           // 帧ID
+}

@@ -1,0 +1,20 @@
+name:ConvNd_26
+type:ConvolutionRistretto
+kernel_size:1
+stride:1
+pad:0
+group:1
+bw_layer_in:16
+bw_layer_out:16
+bw_params:16
+fl_layer_in:7
+fl_layer_out:7
+fl_params:11
+unsigned_in:0
+unsigned_out:0
+weights_n:4
+weights_c:8
+weights_h:1
+weights_w:1
+-281	-464	104	-326	85	-293	801	94	96	457	-373	-142	270	-522	466	-22	-448	464	542	47	-527	-210	282	-199	82	-160	248	352	196	-48	360	-77
+0	0	0	0

@@ -1,0 +1,7 @@
+name:pooling3_ft
+type:Pooling
+kernel_size:3
+stride:3
+pad:0
+method:AVE
+global_pool:0

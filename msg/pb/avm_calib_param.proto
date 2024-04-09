@@ -1,0 +1,67 @@
+﻿syntax = "proto3";
+
+package minieye.avm;
+import "camera.proto";
+
+//车辆自身结构信息，车宽高必须设置，其它参数可全设为0（车身坐标系原点在车身中心）
+//默认单位为m
+message CarInfo{
+    float car_length = 1;           //车辆长度，必须设置
+    float car_width = 2;            //车辆宽度，必须设置
+    float car_front_wheelspan = 3;  //车辆前轮轮距
+    float car_rear_wheelspan = 4;   //车辆后轮轮距
+    float car_wheelbase = 5;        //车辆轴距，前后轴距离
+    float car_wheelWidth = 6;       //轮胎宽度，默认所有轮胎宽度相同
+    float car_front_overhang = 7;   //车辆前悬,车前端到前轮中心
+    float car_front_blend = 8;      //车辆前盲区
+    float car_rear_blend = 9;       //车辆后盲区
+    float car_left_blend = 10;		 //车辆左盲区
+    float car_right_blend = 11;     //车辆右盲区
+    float front_camera_height = 12;   //前视相机
+    float rear_camera_height = 13;    //后视相机
+    float left_camera_height = 14;    //左视相机
+    float right_camera_height = 15;   //右视相机
+    float blend_angle = 16;     //融合扇形角度
+    float blend_hvOffset = 17;  //对角线与水平的角度
+}
+
+//标定棋盘格信息
+message AvmExtrinsInfo{
+    float checker_dw = 1;          //棋盘格小方格宽度
+    float checker_dh = 2;          //棋盘格小方格长度
+    float vert_num = 3;           //棋盘格垂直方向内角点个数，无特殊说明，以短边为垂直方向
+    float horize_num = 4;         //棋盘格水平方向内角点个数
+
+    //待测量的参数，详细说明，参考钉钉apa文档中的avm标定
+    float w = 5;
+    float h = 6;
+    float d = 7;
+    float v = 8;
+}
+
+enum AvmCalibMethod{
+    CALIB_METHOD_UNKNOWN = 0;
+    AVM_STATIC_RT = 1;     //基于旋转矩阵与平移向量进行标定的方法
+    AVM_STATIC_HOMO = 2;   //基于单应性矩阵进行标定的方法
+    //TODO
+    AVM_DYNAMIC_CALIB = 3;
+    AVM_MANUAL_CALIB=4;
+}
+
+enum AvmErrorCode{
+    AVM_NORMAL_STATE = 0;               //正常状态
+    AVM_ERROR_ENPTY_IMAGE = 1;          //空图像
+    AVM_ERROR_CONNER_NOT_DETECTED = 2;  //未检测到角点
+    AVM_ERROR_ABNORMAL_EXTRINS = 3;     //异常外参
+    AVM_ERROR_ABNORMAL_INTRINS = 4;     //异常内参
+    AVM_ERROR_INVALID_CAMERA_NUM = 5;   //不支持的图像数量
+    AVM_ERROR_OPENFILE = 6;             //文件打开失败
+    AVM_ERROR_SAVEFILE = 7;             //文件存储失败
+}
+
+message AvmCalibInfo{
+    AvmCalibMethod calib_method = 1;
+    repeated minieye.CameraParam camera_param = 2;  //保存标定后的相机信息
+    CarInfo car_info = 3;
+    AvmExtrinsInfo extrins_info = 4;
+}

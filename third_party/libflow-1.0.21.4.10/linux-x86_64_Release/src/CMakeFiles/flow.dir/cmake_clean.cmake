@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  "../lib/libflow.a"
+  "../lib/libflow.pdb"
+  "CMakeFiles/flow.dir/String.cpp.o"
+  "CMakeFiles/flow.dir/String.cpp.o.d"
+  "CMakeFiles/flow.dir/__/vendor/mongoose/mongoose.c.o"
+  "CMakeFiles/flow.dir/__/vendor/mongoose/mongoose.c.o.d"
+  "CMakeFiles/flow.dir/client.cpp.o"
+  "CMakeFiles/flow.dir/client.cpp.o.d"
+  "CMakeFiles/flow.dir/client_conn.cpp.o"
+  "CMakeFiles/flow.dir/client_conn.cpp.o.d"
+  "CMakeFiles/flow.dir/context.cpp.o"
+  "CMakeFiles/flow.dir/context.cpp.o.d"
+  "CMakeFiles/flow.dir/event_loop.cpp.o"
+  "CMakeFiles/flow.dir/event_loop.cpp.o.d"
+  "CMakeFiles/flow.dir/flow_inner.cpp.o"
+  "CMakeFiles/flow.dir/flow_inner.cpp.o.d"
+  "CMakeFiles/flow.dir/http_conn.cpp.o"
+  "CMakeFiles/flow.dir/http_conn.cpp.o.d"
+  "CMakeFiles/flow.dir/http_request.cpp.o"
+  "CMakeFiles/flow.dir/http_request.cpp.o.d"
+  "CMakeFiles/flow.dir/http_response.cpp.o"
+  "CMakeFiles/flow.dir/http_response.cpp.o.d"
+  "CMakeFiles/flow.dir/outmsg.cpp.o"
+  "CMakeFiles/flow.dir/outmsg.cpp.o.d"
+  "CMakeFiles/flow.dir/platform.cpp.o"
+  "CMakeFiles/flow.dir/platform.cpp.o.d"
+  "CMakeFiles/flow.dir/sender.cpp.o"
+  "CMakeFiles/flow.dir/sender.cpp.o.d"
+  "CMakeFiles/flow.dir/sender_impl.cpp.o"
+  "CMakeFiles/flow.dir/sender_impl.cpp.o.d"
+  "CMakeFiles/flow.dir/sock_pair.cpp.o"
+  "CMakeFiles/flow.dir/sock_pair.cpp.o.d"
+  "CMakeFiles/flow.dir/utils.cpp.o"
+  "CMakeFiles/flow.dir/utils.cpp.o.d"
+  "CMakeFiles/flow.dir/web_server.cpp.o"
+  "CMakeFiles/flow.dir/web_server.cpp.o.d"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang C CXX)
+  include(CMakeFiles/flow.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

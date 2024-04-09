@@ -1,0 +1,316 @@
+{
+    "log_level": 1,
+    "topics": [
+        {
+            "topic": "planning",
+            "dds_mode": "shm",
+            "data_refresh_rate": 10,
+            "buff_num": 10,
+            "elem_max_size": 10000
+        },
+        {
+            "topic": "camera30",
+            "dds_mode": "shm",
+            "buff_num": 100,
+            "elem_max_size": 8196
+        },
+        {
+            "topic": "camera41",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 8196
+        },
+        {
+            "topic": "uss_dist",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 1000
+        },
+        {
+            "topic": "uss_parkingspace",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 5000
+        },
+        {
+            "topic": "uss_parkingspace_mviz",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 5000
+        },
+        {
+            "topic": "cus_parkingspace",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 5000
+        },
+        {
+            "topic": "imu",
+            "dds_mode": "shm",
+            "buff_num": 100,
+            "elem_max_size": 1000
+        },
+        {
+            "topic": "vehicle_signal",
+            "dds_mode": "shm",
+            "buff_num": 100,
+            "elem_max_size": 1000
+        },
+        {
+            "topic": "avm_status",
+            "dds_mode": "shm",
+            "buff_num": 20,
+            "elem_max_size": 1024
+        },
+        {
+            "topic": "avm_settings",
+            "dds_mode": "shm",
+            "buff_num": 20,
+            "elem_max_size": 1024
+        },
+        {
+            "topic": "avm_calib_status",
+            "dds_mode": "shm",
+            "buff_num": 20,
+            "elem_max_size": 2000
+        },
+        {
+            "topic": "avm_calib_ctrl",
+            "dds_mode": "shm",
+            "buff_num": 20,
+            "elem_max_size": 2000
+        },
+        {
+            "topic": "vis_parkingspace",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 5000
+        },
+        {
+            "topic": "vis_parkingspace_to_ui",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 10000
+        },
+        {
+            "topic": "parkingspace",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 5000
+        },
+        {
+            "topic": "parkingspace_to_ui",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 10000
+        },
+        {
+            "topic": "apa_state_control",
+            "dds_mode": "shm",
+            "buff_num": 20,
+            "elem_max_size": 1024
+        },
+        {
+            "topic": "freespace",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 25000
+        },
+        {
+            "topic": "gridmap",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 10240
+        },
+        {
+            "topic": "apa_odometry",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 8000
+        },
+        {
+            "topic": "vehicle_control",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 200
+        },
+        {
+            "topic": "raw_ins_ps",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 8196
+        },
+        {
+            "topic": "uss",
+            "dds_mode": "shm",
+            "buff_num": 20,
+            "elem_max_size": 256
+        },
+        {
+            "topic": "odometry_3d",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 8000
+        },
+        {
+            "topic": "odo_vehicle_signal",
+            "dds_mode": "shm",
+            "data_refresh_rate": 50,
+            "buff_num": 100,
+            "elem_max_size": 1000
+        },
+        {
+            "topic": "apa_gnss",
+            "dds_mode": "shm",
+            "data_refresh_rate": 50,
+            "buff_num": 100,
+            "elem_max_size": 1000
+        },
+        {
+            "topic": "apa_vehicle_signal",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 100,
+            "elem_max_size": 1000
+        },
+        {
+            "topic": "hmi_to_soc_havp",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 20,
+            "elem_max_size": 1024
+        },
+        {
+            "topic": "ihu_to_soc",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 20,
+            "elem_max_size": 1024
+        },
+        {
+            "topic": "planning_to_hmi",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 20,
+            "elem_max_size": 2560
+        },
+        {
+            "topic": "vtr",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 5,
+            "elem_max_size": 20000
+        },
+        {
+            "topic": "parking_mask_clusters",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 8,
+            "elem_max_size": 100
+        },
+        {
+            "topic": "parking_landmark_clusters",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 8,
+            "elem_max_size": 100
+        },
+        {
+            "topic": "post_roadmarks",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 10,
+            "elem_max_size": 80000
+        },
+        {
+            "topic": "parking_object",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 8,
+            "elem_max_size": 8000
+        },
+        {
+            "topic": "parking_gnss",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 1000
+        },
+        {
+            "topic": "ap_map_response",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 1000
+        },
+        {
+            "topic": "map_engine_response",
+            "dds_mode": "shm",
+            "data_refresh_rate": 10,
+            "buff_num": 1,
+            "elem_max_size": 60000
+        },
+        {
+            "topic": "imu_correct_data",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 1000
+        },
+        {
+            "topic": "parking_odometry",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 8000
+        },
+        {
+            "topic": "parking_ins",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 1000
+        },
+        {
+            "topic": "apa_hmi_signal",
+            "dds_mode": "shm",
+            "buff_num": 20,
+            "elem_max_size": 1024
+        },
+        {
+            "topic": "parking_track",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 8,
+            "elem_max_size": 15000
+        },
+        {
+            "topic": "parking_target",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 8,
+            "elem_max_size": 15000
+        },
+        {
+            "topic": "imu_rtk",
+            "dds_mode": "shm",
+            "buff_num": 100,
+            "elem_max_size": 1000
+        },
+        {
+            "topic": "odometry_3d_gt",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 8000
+        },
+        {
+            "topic": "camera_shelter",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 8,
+            "elem_max_size": 128
+        }, {
+            "topic": "uss_output",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 8,
+            "elem_max_size": 2500
+        }
+
+    ]
+}

@@ -1,0 +1,23 @@
+{
+  "log_level": 1,
+  "topics": [
+    {
+      "topic": "camera0",
+      "dds_mode": "shm",
+      "buff_num": 20,
+      "elem_max_size": 940000
+    },
+    {
+      "topic": "avm_calib_status",
+      "dds_mode": "shm",
+      "buff_num": 20,
+      "elem_max_size": 2000
+    },
+    {
+      "topic": "avm_calib_ctrl",
+      "dds_mode": "shm",
+      "buff_num": 20,
+      "elem_max_size": 2000
+    }
+  ]
+}

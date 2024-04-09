@@ -1,0 +1,34 @@
+syntax = "proto3";
+import "geometry.proto";
+
+// VERSION
+// 0.1
+package apa;
+
+/*
+       {
+           "topic": "apa_odometry",
+           "dds_mode": "shm",
+           "data_refresh_rate": 20,
+           "buff_num": 10,
+           "elem_max_size": 8000
+       }
+*/
+
+message Pose {
+	uint64 timestamp_us = 1;    // time stamp us
+	perception.common.Point3f pose = 2;  //  [x, y, theta] [meter, meter, rad]
+}
+
+message PoseList {
+	repeated Pose pose_list = 1;
+}
+
+message ApaOdometry {
+	uint64 timestamp_us = 1;       // 时间戳
+	uint64 frame_id = 2;             // 帧ID
+	Pose current_pose = 3;           // 当前位姿
+	PoseList history_pose = 4;       // 历史位姿
+        float velocity = 5;              // 当前速度
+        float distance = 6;              // 当前里程
+}

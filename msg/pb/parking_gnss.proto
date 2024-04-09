@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package minieye.parking;
+
+
+message AsensingGNSSData
+{
+     uint64 timestamp = 1;              // 管理面时间戳 us
+     uint64 tick = 2;                   // 数据面时间戳 us
+	 uint64 frame_id = 3;             // 帧ID
+     uint64 pos_measurement_time = 4;  // us 
+     uint64 vel_measurement_time = 5;  // us 
+     uint64 heading_measurement_time = 6;  // us 
+    // lon lat height
+     double latitude = 7;           // 纬度，北半球为正 [rad]
+     double longitude = 8;       // 经度，东半球为正 [rad]
+     double height = 9;              // 椭球高，向上为正[m]
+     float latitude_std_dev = 10;      // latitude standard deviation (m)
+     float longitude_std_dev = 11;  // longitude standard deviation (m)
+     float height_std_dev = 12;         // height standard deviation (m) 
+
+    // 状态
+     uint32 position_type = 13;
+     uint32 velocity_type = 14;
+     uint32 heading_type = 15;
+
+    // 速度
+     float horizontal_speed = 16;                     // horizontal speed in m/s
+     float track_over_ground = 17;                 // direction of travel in degrees
+     float vertical_speed = 18;                          // vertical speed in m/s
+
+    // 航向
+     float heading = 19;   
+     float heading_std_dev = 20;
+
+    // 卫星数量
+     uint32 num_sats = 21;
+}
+
+
+message AsensingGNSSDatas
+{
+    repeated AsensingGNSSData asensing_gnss_datas = 1;
+}

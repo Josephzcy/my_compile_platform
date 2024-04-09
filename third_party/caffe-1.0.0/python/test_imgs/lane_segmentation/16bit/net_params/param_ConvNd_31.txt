@@ -1,0 +1,20 @@
+name:ConvNd_31
+type:DeconvolutionRistretto
+kernel_size:2
+stride:2
+pad:0
+group:1
+bw_layer_in:16
+bw_layer_out:16
+bw_params:16
+fl_layer_in:7
+fl_layer_out:7
+fl_params:11
+unsigned_in:0
+unsigned_out:0
+weights_n:8
+weights_c:2
+weights_h:2
+weights_w:2
+801	1127	1319	1492	-843	-1057	-1273	-1406	168	980	1372	2002	-204	-1053	-1339	-2056	-914	470	-2168	-1171	916	-503	2166	1171	153	1804	163	1758	-191	-1796	-160	-1786	1820	1138	1096	256	-1821	-1095	-1020	-250	-1544	-1012	-1424	-264	1625	1016	1412	202	1446	1617	271	1223	-1356	-1592	-308	-1211	2037	1328	564	291	-1982	-1298	-546	-185
+0	0	0	0	0	0	0	0

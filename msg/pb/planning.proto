@@ -1,0 +1,56 @@
+syntax = "proto3";
+package minieye;
+
+/*
+       {
+           "topic": "planning",
+           "dds_mode": "shm",
+           "data_refresh_rate": 10,
+           "buff_num": 100,
+           "elem_max_size": 8000
+       }
+*/
+
+message PathPoint {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+    float theta = 4;
+    float s = 5;
+    float kappa = 6;
+    float dkappa = 7;
+    float ddkappa = 8;
+    float x_derivative = 9;
+    float y_derivative = 10;
+}
+
+message TrajectoryPoint {
+    PathPoint path_point = 1;
+    float v = 2;
+    float a = 3;
+    float da = 4;
+    float rl_time = 5;
+    float steer = 6;
+}
+
+message Trajectory {
+    uint64 timestamp = 1;
+    uint64 tick = 2;
+    uint32 id = 3;
+    int32 gear = 4; // 0-other, 1-R, 2-D
+    int32 type = 5; // 0-other, 1-line, 2-circle
+    repeated TrajectoryPoint trajectory = 6;
+    float total_length = 7;
+    float total_time = 8;
+}
+
+// topic : "planning"
+message Planning {
+    uint64 timestamp = 1;        // microseconds
+    uint64 tick = 2;
+    uint32 planning_status = 3;  // 0-STANDBY， 1-ACTIVE， 2-SUSPEND， 3-REPLAN, 4-FINISHED, 5-FAILURE
+    Trajectory planning_trajectory = 4;
+    float target_yaw_bias = 5; // 与最终目标航向偏差
+    float target_l_bias = 6; // 与最终目标横向偏差
+    float target_s_bias = 7; // 与最终目标纵向偏差
+}

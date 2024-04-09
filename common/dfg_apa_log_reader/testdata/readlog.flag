@@ -1,0 +1,13 @@
+--json_file=/mnt/hgfs/data3/share/sim_data/byd_test/rec_20200227_104037_664232.txt
+--fisheye_video_file=/mnt/hgfs/data3/share/sim_data/byd_test/rec_202002271040_287420.avi
+--apa_camera_log_addr=/mnt/hgfs/data3/share/sim_data/byd_test/rec_202002271040_287420.txt
+--apa_motion_log_addr=/mnt/hgfs/data3/share/sim_data/20200221165831-apa-demo-type1/log.txt
+--apa_ultrasonic_log_addr=/mnt/hgfs/data3/share/sim_data/20200221165831-apa-demo-type1/log_ultrasonic.txt
+--birdview_video_file=/mnt/hgfs/data3/share/sim_data/20200221165831-apa-demo-type1/Birdview.mp4
+--birdview_images_file=/mnt/hgfs/data3/share/sim_data/20200221165831-apa-demo-type1/Birdview/
+--start_frame_no=1
+--end_frame_no=6000
+--generate_pic=false
+
+
+

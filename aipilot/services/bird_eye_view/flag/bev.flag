@@ -1,0 +1,5 @@
+--is_init_in_apa_state=false
+--is_init_door_close=false
+--max_fps=12.5
+--save_bev_nv12_format=false
+#--output_frame_dir=/ota/postprocess/inference_bev_output

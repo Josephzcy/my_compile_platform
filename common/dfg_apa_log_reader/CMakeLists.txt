@@ -1,0 +1,11 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
+PROJECT(apa_log_read)
+INCLUDE(${BUILD_SCRIPT_ROOT}/cmake/common.cmake)
+INCLUDE_DIRECTORIES(
+    include/apa_log_reader
+    )
+
+ADD_SUBDIRECTORY(src)
+# ADD_SUBDIRECTORY(test)
+
+# INSTALL(DIRECTORY include/apa_log_reader DESTINATION ${INSTALL_INCLUDE_DIR})

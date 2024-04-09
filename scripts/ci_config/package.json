@@ -1,0 +1,217 @@
+{
+  "name": "ci_build_config",
+  "version": "0.0.2",
+  "target_arch": "tda4",
+  "master_branch": "master_havp_t1q3",
+  "dependencies": [
+    {
+      "component": "ap_slam",
+      "path": "aipilot/modules/ap_slam",
+      "url": "git@git.minieye.tech:xuezhaohan/ap_slam.git",
+      "branch": "havp_t1q3",
+      "build_model": "bazel",
+      "submodules": [
+        {
+          "component": "ap_map",
+          "path": "aipilot/modules/ap_slam/ap_map",
+          "url": "git@git.minieye.tech:xuezhaohan/ap_map.git",
+          "branch": "havp_t1q3",
+          "build": true,
+          "build_model": "bazel",
+          "submodules": null
+        },
+        {
+          "component": "map_engine",
+          "path": "aipilot/modules/ap_slam/map_engine",
+          "url": "git@git.minieye.tech:xuezhaohan/map_engine.git",
+          "branch": "havp_t1q3",
+          "build": true,
+          "build_model": "bazel",
+          "submodules": null
+        }
+      ]
+    },
+    {
+      "component": "havp_parkingspace_postprocess",
+      "path": "aipilot/modules/havp_parkingspace_postprocess",
+      "url": "git@git.minieye.tech:FusionGroup/havp_parkingspace_postprocess.git",
+      "main_branch": null,
+      "branch": "develop_havp_landmark",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "sensor_fusion",
+      "path": "aipilot/modules/sensor_fusion",
+      "url": "git@git.minieye.tech:FusionGroup/sensor_fusion.git",
+      "main_branch": null,
+      "branch": "develop_apal_x50",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "avm_mapping",
+      "path": "aipilot/services/apa_mapping",
+      "url": "git@git.minieye.tech:wangnianbing/apa_mapping.git",
+      "main_branch": null,
+      "branch": "master",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "havp_inference",
+      "path": "aipilot/modules/havp_inference",
+      "url": "git@git.minieye.tech:wujiang/havp_inference.git",
+      "main_branch": null,
+      "branch": "master_x50",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "mod",
+      "path": "aipilot/modules/mod",
+      "url": "git@git.minieye.tech:apa_dev/mod.git",
+      "main_branch": null,
+      "branch": "master_x50",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "apa_ultrasonic_parkingspace",
+      "path": "aipilot/modules/apa_ultrasonic_parkingspace",
+      "url": "git@git.minieye.tech:wujiang/apa_ultrasonic_parkingspace.git",
+      "main_branch": null,
+      "branch": "master_x50",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "vehicle_control_dds",
+      "path": "aipilot/modules/vehicle_control_dds",
+      "url": "git@git.minieye.tech:zhangpeng/vehicle_control_dds.git",
+      "main_branch": null,
+      "branch": "dev_t1q3_havp",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "apa_planning",
+      "path": "aipilot/modules/apa_planning",
+      "url": "git@git.minieye.tech:fanyu/apa_planning.git",
+      "main_branch": null,
+      "branch": "dev_havp_t1q3",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "apa_localization",
+      "path": "aipilot/modules/apa_localization",
+      "url": "git@git.minieye.tech:xujian/apa_localization.git",
+      "main_branch": null,
+      "branch": "apa_dev_t1q3",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "bird_eye_view",
+      "path": "aipilot/services/bird_eye_view",
+      "url": null,
+      "main_branch": null,
+      "branch": null,
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "dfg_avm_mapping",
+      "path": "aipilot/services/dfg_avm_mapping",
+      "url": null,
+      "main_branch": null,
+      "branch": null,
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "odom_calibration",
+      "path": "aipilot/services/odom_calibration",
+      "url": "git@git.minieye.tech:zhangchengyu/wheel_radius_calibration.git",
+      "main_branch": null,
+      "branch": "master_apa_x50",
+      "build_model": "bazel",
+      "submodules": [
+        {
+          "component": "imu_bias_calibration",
+          "path": "aipilot/services/odom_calibration/imu_bias_calibration",
+          "url": "git@git.minieye.tech:xuezhaohan/imu_bias_calibration.git",
+          "main_branch": null,
+          "branch": "master",
+          "build": true,
+          "build_model": "bazel",
+          "submodules": null
+        }
+      ]
+    },
+    {
+      "component": "apa_manager",
+      "path": "aipilot/modules/apa_manager",
+      "url": "git@git.minieye.tech:huangwei0527/apa_manager.git",
+      "main_branch": null,
+      "branch": "apa_manager_l_t1q3_havp",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "vtr",
+      "path": "aipilot/modules/vtr",
+      "url": "git@git.minieye.tech:helin/vtr.git",
+      "main_branch": null,
+      "branch": "t1j",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "imu_asensing",
+      "path": "aipilot/services/imu_asensing",
+      "url": "git@git.minieye.tech:helin/imu_asensing.git",
+      "branch": "havp_t1q3",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "avm-parking",
+      "path": "aipilot/modules/avm-parking",
+      "url": "git@git.minieye.tech:huangjian/avm-parking.git",
+      "main_branch": null,
+      "branch": "avm_parking_x50_aipolorer",
+      "build_model": "bazel",
+      "target_name": [
+        "avm-parking",
+        "module_create_model"
+      ],
+      "submodules": null
+    },
+    {
+      "component": "avm-manager",
+      "path": "aipilot/modules/avm-manager",
+      "url": "git@git.minieye.tech:tanrongnian/avm-manager.git",
+      "main_branch": null,
+      "branch": "avmman_x50_aipolorer",
+      "build_model": "bazel",
+      "target_name": [
+        "avm_manager"
+      ],
+      "submodules": null
+    },
+    {
+      "component": "hmiproxy-havp",
+      "path": "aipilot/modules/hmiproxy-havp",
+      "url": "git@git.minieye.tech:guanpeizhe/hmiproxy-havp.git",
+      "main_branch": null,
+      "branch": "dev-havp-tda4",
+      "build_model": "bazel",
+      "target_name": [
+        "hmiproxy"
+      ],
+      "submodules": null
+    }
+  ]
+}

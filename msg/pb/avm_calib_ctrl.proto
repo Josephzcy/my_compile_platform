@@ -1,0 +1,81 @@
+syntax = "proto3";
+package minieye;
+
+/*
+{
+  "topic": "avm_calib_ctrl",
+  "dds_mode": "shm",
+  "buff_num": 20,
+  "elem_max_size": 2000
+}
+*/
+message AVMCalibCtrl {
+  enum CalibCtrl {
+    START_AUTO_CALIB = 0;           // 开始自动标定
+    START_MANUAL_CALIB = 1;         // 开始手动标定
+    STOP_CALIB = 2;                 // 停止标定
+    START_AUTO_SERVICE_CALIB = 3;  // 开始售后标定
+  }
+  map<int32, float> signals = 1; // pair : <CalibCtrl, value> 设置信号
+  uint64 timestamp = 2; // 时戳, milliseconds
+  uint64 tick = 3; // 异构设备上的时钟
+}
+/**
+    {
+      "topic": "avm_calib_status",
+      "dds_mode": "shm",
+      "buff_num": 20,
+      "elem_max_size": 2000
+    }
+ */
+
+message AvmCalibState{
+  enum CalibState{
+    kSuccess = 0;
+    kReadyToCalib = 1;
+    kCalibrating = 2;
+    kFailure = 3;
+    kErrUnKnown = 4;
+    kErrTimeOutGettingImage = 5;
+    kErrLoadConfig = 6;
+    kErrCornerDetection = 7;
+    kErrSaveCalibFile = 8;
+    kErrAbnormalExtrins = 9;
+  }
+  enum CalibErrCode{
+    // S56 标定失败原因
+    kNoError = 0;
+    kErrUnKnownReason = 1;
+    kErrGetImageTimeout = 2;
+    kErrParaLoadFail = 3;
+    kErrFrontCornerDetectFail = 4;
+    kErrRearCornerDetectFail = 5;
+    kErrLeftCornerDetectFail = 6;
+    kErrRightCornerDetectFail = 7;
+    kErrFrontCamFileWriteFail = 8;
+    kErrRearCamFileWriteFail = 9;
+    kErrLeftCamFileWriteFail = 10;
+    kErrRightCamFileWriteFail = 11;
+    kErrFrontCamParaError = 12;
+    kErrRearCamParaError = 13;
+    kErrLeftCamParaError = 14;
+    kErrRightCamParaError = 15;
+  }
+  map<int32, int32> states = 1;      // pair : <camera_id, CalibState> 对应方向相机id
+  int32 err_code = 2;
+}
+/**
+    {
+      "topic": "avm_camera_state",
+      "dds_mode": "shm",
+      "buff_num": 20,
+      "elem_max_size": 2000
+    }
+ */
+message AvmCameraParams{
+  enum AvmCameraParamState{
+    kSuccess = 0;
+    kFailure = 1;
+  }
+  map<int32, int32> signals = 1; // pair : <camera_id, AvmCameraParamState> 设置信号
+}

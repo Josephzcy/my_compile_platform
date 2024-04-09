@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package minieye;
+
+enum DataSource {
+	kMinieye   = 0; 
+	kEyeQ3     = 1;
+	kEyeQ4     = 2;
+	kJ2        = 3;
+	kLidar     = 4;      // 纯激光雷达
+	kCamera    = 5;      // 纯摄像头
+	kCameraLidar = 6;    // 摄像头激光雷达融合
+	kUltraRadar = 7;     // 超声波雷达
+}

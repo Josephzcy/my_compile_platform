@@ -1,0 +1,85 @@
+syntax = "proto3";
+// VERSION
+// 0.1
+package minieye;
+
+/*
+       {
+           "topic": "hmi_to_soc", "hmi_to_soc_havp"
+           "dds_mode": "shm",
+           "data_refresh_rate": 20,
+           "buff_num": 20,
+           "elem_max_size": 1024
+       }
+*/
+
+// 车牌号，一共8位
+message RRM_1_AVM
+{
+    uint32 licenseplate_1 = 1; // 0x0: 京; 0x1: 津; 0x2: 沪; 0x3: 渝; 0x4: 冀; 0x5: 吉; 0x6: 辽; 0x7: 黑; 0x8: 湘; 0x9: 鄂; 0xA: 甘; 0xB: 晋; 0xC: 陕; 0xD: 豫; 0xE: 川; 0xF: 云; 0x10: 桂; 0x11: 蒙; 0x12: 贵; 0x13: 青; 0x14: 藏; 0x15: 新; 0x16: 宁; 0x17: 粤; 0x18: 琼; 0x19: 闽; 0x1A: 苏; 0x1B: 浙; 0x1C: 赣; 0x1D: 鲁; 0x1E: 皖
+    uint32 licenseplate_2 = 2; // 0x0: A; 0x1: B; 0x2: C; 0x3: D; 0x4: E; 0x5: F; 0x6: G; 0x7: H; 0x8: I; 0x9: J; 0xA: K; 0xB: L; 0xC: M; 0xD: N; 0xE: O; 0xF: P; 0x10: Q; 0x11: R; 0x12: S; 0x13: T; 0x14: U; 0x15: V; 0x16: W; 0x17: X; 0x18: Y; 0x19: Z
+    uint32 licenseplate_3 = 3; // 0x0: null; 0x1: 0; 0x2: 1; 0x3: 2; 0x4: 3; 0x5: 4; 0x6: 5; 0x7: 6; 0x8: 7; 0x9: 8; 0xA: 9; 0xB: A; 0xC: B; 0xD: C; 0xE: D; 0xF: E; 0x10: F; 0x11: G; 0x12: H; 0x13: I; 0x14: J; 0x15: K; 0x16: L; 0x17: M; 0x18: N; 0x19: O; 0x1A: P; 0x1B: Q; 0x1C: R; 0x1D: S; 0x1E: T; 0x1F: U; 0x20: V; 0x21: W; 0x22: X; 0x23: Y; 0x24: Z
+    uint32 licenseplate_4 = 4; // 同licenseplate_3
+    uint32 licenseplate_5 = 5; // 同licenseplate_3
+    uint32 licenseplate_6 = 6; // 同licenseplate_3
+    uint32 licenseplate_7 = 7; // 同licenseplate_3
+    uint32 licenseplate_8 = 8; // 同licenseplate_3
+}
+
+message RRM_2_AVM
+{
+    uint32 BtnPressInputValueX      = 1; // 0..4095
+    uint32 BtnPressInputValueY      = 2; // 0..4095
+    uint32 TouchEvt                 = 3; // 0x0:Not active; 0x1:Press down; 0x2:Moving; 0x3:Lift up
+    uint32 AVMViewModeSwitch        = 4; // AVM视角模式  0x0: No display; 0x1: TV+2D front view; 0x2: TV+2D rear view; 0x3: TV+2D left view; 0x4: TV+2D right view; 0x5: 2D front wide view; 0x6: 2D rear wide view; 0x7: TV+3D front view; 0x8: TV+3D rear view; 0x9: TV+3D left view; 0xA: TV+3D right view; 0xB: TV+3D left front view; 0xC: TV+3D right front view; 0xD: TV+3D left rear view; 0xE: TV+3D right rear view; 0xF: TV+3D free slide view; 0x10: TV+front zoom view; 0x11: TV+rear zoom view; 0x12: Calibration Mode      
+    bool   AVMTransparentHoodSwitch = 5; // 0x0:OFF; 0x1:ON
+    bool   AVMTrailSwitch           = 6; // 0x0:OFF; 0x1:ON
+}
+
+// HMI交互信息
+message RRM_3_AVM
+{
+    uint32 APA_OP_SW             = 1;  // 手动激活APA开关  0x0:No Req; 0x1:OpenAPA; 0x2:CloseAPA
+    uint32 APA_Slot_Chosen       = 2;  // 选择要泊入的车位ID 0..15
+    bool   APA_Engage_Confirm    = 3;  // 确认泊入  0x0: No; 0x1: Yes
+    uint32 APA_Suspend_Resume    = 4;  // 暂停泊入  0x0:Default; 0x1:Suspend; 0x2:Resume
+    uint32 APA_PullOut_Option    = 5;  // 泊出选项  0x0:Default; 0x1:Full; 0x2:Half
+    uint32 APA_PullOut_Direction = 6;  // 泊出方向  0x0:Default; 0x1:Left out; 0x2:Right out
+    uint32 APA_ParkIn_Direction  = 7;  // 泊入方向  0x0:Default; 0x1:Tail in; 0x2:Head in
+    uint32 AVM_OP_VIEW_DVR_SW    = 8;  // AVM视角选项  0x0:No_Req; 0x1:OpenAVM; 0x2:OpenDVR; 0x3:Startup_Close
+    uint32 Set_SteeringWheel     = 9;  // 方向盘转角激活开关  0x0:NO_Req; 0x1:ON; 0x2:OFF
+    uint32 Set_Language          = 10; // 设置语言格式  0x0:NO_Req; 0x1:Chinese; 0x2:English; 0x3:Arabic; 0x4:Spanish
+    uint32 Set_RadarWarining     = 11; // 显示雷达盾牌开关  0x0:NO_Req; 0x1:ON; 0x2:OFF
+    uint32 Set_TurnIndication    = 12; // 转向灯激活开关  0x0:NO_Req; 0x1:ON; 0x2:OFF
+    uint32 Set_BodyColor         = 13; // 车身颜色  0x0:No Req; 0x1:Blue; 0x2:Red; 0x3:White; 0x4:Silver; 0x5:Brown; 0x6:Bright Red; 0x7:Orange
+    uint32 Set_AutoZoom          = 14; // 自动放大视图开关  0x0:NO_Req; 0x1:ON; 0x2:OFF
+    uint32 Set_PASTrigger        = 15; // 雷达检测障碍物激活开关  0x0:NO_Req; 0x1:ON; 0x2:OFF
+    uint32 Set_Transparency      = 16; // 透明度设置 有效值：10..100   0XFF failure
+    uint32 Set_AutoExit          = 17; // 自动退出全景开关  0x0:NO_Req; 0x1:ON; 0x2:OFF
+    uint32 Set_LicensePlate      = 18; // 车牌号设置开关  0x0:NO_Req; 0x1:ON; 0x2:OFF
+    uint32 Set_GuideLine         = 19; // 动态引导线设置开关  0x0:NO_Req; 0x1:ON; 0x2:OFF
+    uint32 Set_FactoryDefault    = 20; // 恢复默认设置开关  0x0:NO_Req; 0x1:ON; 0x2:OFF
+    uint32 Plan_type             = 21; // 规划方法 0x0:Default(规划默认方法)，0x1:搜索法, 0x2:几何法
+}
+
+message HMI_HAVP_CALLBACKS {
+    bool HAVP_Engage_Confim = 1;          // 确认开始巡迹 和 中断恢复记忆泊车
+    bool HAVP_Build_Map_Confirm = 2;      // 确认开始建图
+    bool HAVP_Build_Map_Finished = 3;     // 用户确认完成建图
+    bool HAVP_Exit = 4;                   // 退出 HAVP 系统
+    bool HAVP_Build_Map_Park_Manual = 5;  // 手动泊入
+    bool HAVP_Start = 6;                  // HAVP激活
+    bool HAVP_Build_Map_Back_To_Learning = 7; // 点击继续,建图手动泊入状态回退到路线记忆中
+    uint32 HAVP_Parking_Control_Deceleration_Enum = 8; // 0 退出control和deceleration, 1 进入记忆泊车中, 2 沿途寻找车位
+    bool HAVP_Parking_Continue_Search_Parking = 9; // 记忆泊车中点击继续寻找车位
+}
+
+message HmiToSoc
+{
+    RRM_1_AVM rrm_1_avm = 1;
+    RRM_2_AVM rrm_2_avm = 2;
+    RRM_3_AVM rrm_3_avm = 3;
+    HMI_HAVP_CALLBACKS hmi_havp_callbacks = 4;
+    uint64 timestamp = 5;                      // dds发布时的管理面时间(微秒)
+    uint64 tick = 6;                           // dds发布时的数据面时间(微秒)
+}

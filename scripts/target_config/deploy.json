@@ -1,0 +1,505 @@
+{
+  "name": "ci_deploy_config",
+  "version": "1.0.5.3",
+  "target_arch": "tda4",
+  "master_branch": "apa",
+  "dist_deploy_root": "app/algo/apa/",
+  "deploy_elements": [
+    {
+      "component": "ap_slam",
+      "type": "module",
+      "algo_root": null,
+      "target": {
+        "version": "/version.h",
+        "bin": [
+          "ap_slam"
+        ],
+        "lib": null,
+        "flag": null,
+        "model": null,
+        "param": {
+          "src_path": "/config",
+          "target": [
+            "ap_map.yaml",
+            "map_engine.yaml"
+          ]
+        },
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run_ap_slam.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "imu_asensing",
+      "type": "service",
+      "algo_root": null,
+      "target": {
+        "version": "/version.h",
+        "bin": [
+          "imu_asensing"
+        ],
+        "flag": null,
+        "model": null,
+        "param": {
+          "src_path": "/conf",
+          "target": [
+            "imu_asensing_tda4.yaml"
+          ]
+        },
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run_imu_asensing.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "havp_parkingspace_postprocess",
+      "type": "module",
+      "algo_root": null,
+      "target": {
+        "version": "/version.h",
+        "bin": [
+          "havp_parkingspace_postprocess"
+        ],
+        "flag": {
+          "src_path": "/flag",
+          "target": [
+            "postprocess.yaml"
+          ]
+        },
+        "param": {
+          "src_path": "/param/T1J",
+          "target": [
+            "UltrasonicFixParameters_post.json"
+          ]
+        },
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run_postprocess.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "sensor_fusion",
+      "type": "module",
+      "algo_root": null,
+      "target": {
+        "version": "/version.h",
+        "bin": [
+          "sensor_fusion"
+        ],
+        "flag": {
+          "src_path": "/flag",
+          "target": [
+            "sensor_fusion.yaml"
+          ]
+        },
+        "param": null,
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run_sensor_fusion.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "apa_planning",
+      "type": "module",
+      "algo_root": null,
+      "target": {
+        "version": "/src/planning_log/version.h",
+        "bin": [
+          "apa_planning"
+        ],
+        "lib": [],
+        "flag": {
+          "src_path": "/flag",
+          "target": [
+            "tda4_apa_planning_dds_x50.flag"
+          ]
+        },
+        "model": null,
+        "param": {
+          "src_path": "/param",
+          "target": [
+            "x50_config.json",
+            "x70_config.json",
+            "byd_config.json"
+          ]
+        },
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run_apa_planning_dds_x50.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "havp_inference",
+      "type": "module",
+      "algo_root": null,
+      "target": {
+        "version": "/src/version.h",
+        "bin": [
+          "havp_inference"
+        ],
+        "lib": null,
+        "flag": {
+          "src_path": "/flag",
+          "target": [
+            "havp_inference_tda4.flag"
+          ]
+        },
+        "model": {
+          "src_path": "/model",
+          "target": [
+            "*.bin"
+          ]
+        },
+        "param": {
+          "src_path": "/param",
+          "target": [
+            "parking_slot_crop_havp.json",
+            "freespace_crop_config.json"
+          ]
+        },
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run_havp_inference.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "mod",
+      "type": "module",
+      "algo_root": null,
+      "target": {
+        "version": "/version.h",
+        "bin": [
+          "mod"
+        ],
+        "lib": null,
+        "flag": {
+          "src_path": "/conf",
+          "target": [
+            "parking_mod_tda4.json"
+          ]
+        },
+        "model": null,
+        "param": null,
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run_parking_mod.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "apa_ultrasonic_parkingspace",
+      "type": "module",
+      "algo_root": null,
+      "target": {
+        "version": "/src/version.h",
+        "bin": [
+          "apa_ultrasonic_parkingspace"
+        ],
+        "lib": null,
+        "flag": {
+          "src_path": "/flag",
+          "target": [
+            "uss_ps.flag"
+          ]
+        },
+        "model": null,
+        "param": {
+          "src_path": "/param",
+          "target": [
+            "UltrasonicFixParameters.json"
+          ]
+        },
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run_uss_ps.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "vehicle_control_dds",
+      "type": "module",
+      "algo_root": null,
+      "target": {
+        "version": "/src/vehicle_control/version.h",
+        "bin": [
+          "vehicle_control_dds"
+        ],
+        "lib": null,
+        "param": {
+          "src_path": "/param",
+          "target": [
+            "cfg_vehicle_control.yaml"
+          ]
+        },
+        "flag": {
+          "src_path": "/flag",
+          "target": [
+            "tda4_vehicle_control_dds.flag"
+          ]
+        },
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run_vehicle_control_dds.sh"
+          ]
+        },
+        "model": null
+      }
+    },
+    {
+      "component": "apa_localization",
+      "type": "module",
+      "algo_root": null,
+      "target": {
+        "version": "/version.h",
+        "bin": [
+          "apa_localization"
+        ],
+        "lib": null,
+        "model": null,
+        "param": {
+          "src_path": "/param",
+          "target": [
+            "config_tda4_t1q3.yaml"
+          ]
+        },
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run_apa_localization_t1q3.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "dfg_avm_mapping",
+      "type": "service",
+      "algo_root": null,
+      "target": {
+        "version": "/include/version.h",
+        "bin": null,
+        "flag": null,
+        "model": null,
+        "param": {
+          "src_path": "/calib",
+          "target": [
+            "front_exp.json",
+            "rear_exp.json",
+            "left_exp.json",
+            "right_exp.json"
+          ]
+        },
+        "script": null
+      }
+    },
+    {
+      "component": "bird_eye_view",
+      "type": "service",
+      "algo_root": null,
+      "target": {
+        "version": "/src/version.h",
+        "bin": [
+          "bird_eye_view"
+        ],
+        "lib": null,
+        "flag": {
+          "src_path": "/flag",
+          "target": [
+            "bev.flag"
+          ]
+        },
+        "model": null,
+        "param": null,
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run_bev.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "odom_calibration",
+      "type": "service",
+      "algo_root": null,
+      "target": {
+        "version": "/version.h",
+        "bin": [
+          "odom_calibration"
+        ],
+        "lib": null,
+        "model": null,
+        "param": {
+          "src_path": "/config",
+          "target": [
+            "wheel_radius_calibration_x50_tda4.yaml",
+            "imu_bias_calibration_cfg.yaml"
+          ]
+        },
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run_odom_calibration.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "apa_manager",
+      "type": "module",
+      "algo_root": null,
+      "target": {
+        "version": "/src/version.h",
+        "bin": [
+          "apa_manager"
+        ],
+        "lib": null,
+        "flag": {
+          "src_path": "/flag",
+          "target": [
+            "tda4_apa_manager_dds.flag"
+          ]
+        },
+        "model": null,
+        "param": {
+          "src_path": "/param",
+          "target": [
+            "config.yaml"
+          ]
+        },
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run_apa_manager_dds.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "vtr",
+      "type": "module",
+      "algo_root": null,
+      "target": {
+        "version": "/version.h",
+        "bin": [
+          "vtr"
+        ],
+        "lib": null,
+        "model": null,
+        "param": {
+          "src_path": "/conf",
+          "target": [
+            "vtr.yaml"
+          ]
+        },
+        "script": {
+          "src_path": "/scripts",
+          "target": [
+            "run_vtr.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "avm-parking",
+      "type": "module",
+      "algo_root": "app/algo/avm",
+      "target": {
+        "version": "/src/common/version.h",
+        "bin": [
+          "avm-parking",
+          "module_create_model"
+        ],
+        "lib": null,
+        "model": null,
+        "param": null,
+        "resources": {
+          "src_path": "/resources",
+          "target": [
+            "*"
+          ]
+        },
+        "script": {
+          "src_path": "/script/chery_t1j",
+          "target": [
+            "run.sh",
+            "debug.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "avm-manager",
+      "type": "module",
+      "algo_root": "app/base/avmman",
+      "target": {
+        "version": "/inc/version.h",
+        "bin": [
+          "avm_manager"
+        ],
+        "lib": null,
+        "model": null,
+        "param": null,
+        "conf": {
+          "src_path": "/conf",
+          "target": [
+            "*"
+          ]
+        },
+        "script": {
+          "src_path": "/script",
+          "target": [
+            "run.sh"
+          ]
+        }
+      }
+    },
+    {
+      "component": "hmiproxy-havp",
+      "type": "module",
+      "algo_root": "app/algo/hmiproxy",
+      "target": {
+        "version": "/src/version.h",
+        "bin": [
+          "hmiproxy"
+        ],
+        "model": null,
+        "param": null,
+        "etc": {
+          "src_path": "/src",
+          "target": [
+            "dds_config.json"
+          ]
+        },
+        "script": {
+          "src_path": "/script/tda4_gcc9.2",
+          "target": [
+            "run.sh"
+          ]
+        }
+      }
+    }
+  ]
+}

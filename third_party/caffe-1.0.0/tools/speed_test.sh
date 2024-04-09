@@ -1,0 +1,3 @@
+/data/wzheng/projects/caffe-quant-master/build/tools/speed_test /data/wzheng/projects/lane_detect/lanemark_filtering/caffe_training_ARM/lane_pts_cls_deploy.prototxt /data/wzheng/projects/lane_detect/lanemark_filtering/caffe_training_ARM/models/minieye_lanemark_iter_4000.caffemodel 1000
+#/data/wzheng/projects/caffe-quant-master/build/tools/speed_test /data/wzheng/projects/lane_detect/lanemark_filtering/caffe_training_ARM/cls_face_model/deploy_ver1.prototxt  /data/wzheng/projects/lane_detect/lanemark_filtering/caffe_training_ARM/cls_face_model/model_ver1.caffemodel 100000
+#gprof -A /data/wzheng/projects/caffe-quant-master/.build_release/tools/speed_test gmon.out > profile.txt

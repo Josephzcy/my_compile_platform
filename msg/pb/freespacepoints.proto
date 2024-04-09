@@ -1,0 +1,48 @@
+syntax = "proto3";
+package freespacepoints;
+
+// topic : "freespace"
+
+enum ObstacleType {
+  kNormal = 0;                              // 正常freespcae检测点
+  kNoCrash = 1;                             // USS检测不可碰撞
+  kRod = 2;                                 // 档杆
+  kVehicle = 3;                             // 车辆
+  kWheelTwo = 4;                            // 二轮车
+  kRider = 5;                               // 骑行人
+  kPed = 6;                                 // 行人
+  kCone = 7;                                // 锥筒/防撞桶
+  kWsign = 8;                               // 三角警示牌/禁停标志
+  kStone = 9;                               // 石墩/柱形石墩
+  kPiles = 10;                              // 铁地桩/塑料地桩
+  kLock = 11;                               // 地锁上锁
+  kPillar = 12;                             // 柱子
+}
+
+message Point2D {
+  float x = 1;
+  float y = 2;
+}
+
+message Points {
+  repeated Point2D points = 1;
+}
+
+message ObstacleSingleRect {
+  float conf = 1;               // 置性度
+  ObstacleType type = 2;        // 障碍物类型
+  Point2D p0 = 3;               // 左上角
+  Point2D p1 = 4;               // 右下角
+}
+
+message ObstacleRects {
+  repeated ObstacleSingleRect rects = 2;
+}
+
+message FreespacePoints {
+  uint64 timestamp = 1;
+  uint64 frame_id = 2;
+  uint64 tick = 3;
+  repeated Points freespacepoints = 4;
+  repeated ObstacleRects obstacle_rects = 5;
+}

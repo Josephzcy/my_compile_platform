@@ -1,0 +1,13 @@
+name:data
+type:Input
+input_channel:3
+input_height:192
+input_width:320
+bw_layer_in:16
+bw_layer_out:16
+bw_params:16
+fl_layer_in:7
+fl_layer_out:7
+fl_params:11
+unsigned_in:0
+unsigned_out:0

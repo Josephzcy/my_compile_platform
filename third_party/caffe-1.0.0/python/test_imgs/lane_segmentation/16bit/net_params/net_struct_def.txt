@@ -1,0 +1,48 @@
+data	Input	0	1	data	3	192	320	
+ConvNd_1	ConvolutionRistretto	1	data	3	192	320	1	ConvNd_1	16	96	160	
+ConvNd_2	ConvolutionRistretto	1	ConvNd_1	16	96	160	1	ConvNd_2	16	48	80	
+Threshold_1	ReLU	1	ConvNd_2	16	48	80	1	Threshold_1	16	48	80	
+ConvNd_3	ConvolutionRistretto	1	Threshold_1	16	48	80	1	ConvNd_3	16	48	80	
+ConvNd_4	ConvolutionRistretto	1	ConvNd_3	16	48	80	1	ConvNd_4	16	24	40	
+ConvNd_5	ConvolutionRistretto	1	ConvNd_4	16	24	40	1	ConvNd_5	32	24	40	
+ConvNd_6	ConvolutionRistretto	1	ConvNd_5	32	24	40	1	ConvNd_6	16	24	40	
+ConvNd_7	ConvolutionRistretto	1	ConvNd_6	16	24	40	1	ConvNd_7	16	24	40	
+ConvNd_8	ConvolutionRistretto	1	ConvNd_7	16	24	40	1	ConvNd_8	32	24	40	
+Add1_1	EltwiseRistretto	2	ConvNd_8	32	24	40	ConvNd_5	32	24	40	1	Add1_1	32	24	40	
+Threshold_2	ReLU	1	Add1_1	32	24	40	1	Threshold_2	32	24	40	
+ConvNd_9	ConvolutionRistretto	1	Threshold_2	32	24	40	1	ConvNd_9	16	24	40	
+ConvNd_10	ConvolutionRistretto	1	ConvNd_9	16	24	40	1	ConvNd_10	16	12	20	
+ConvNd_11	ConvolutionRistretto	1	ConvNd_10	16	12	20	1	ConvNd_11	64	12	20	
+ConvNd_12	ConvolutionRistretto	1	ConvNd_11	64	12	20	1	ConvNd_12	16	12	20	
+ConvNd_13	ConvolutionRistretto	1	ConvNd_12	16	12	20	1	ConvNd_13	16	12	20	
+ConvNd_14	ConvolutionRistretto	1	ConvNd_13	16	12	20	1	ConvNd_14	64	12	20	
+Add1_2	EltwiseRistretto	2	ConvNd_14	64	12	20	ConvNd_11	64	12	20	1	Add1_2	64	12	20	
+Threshold_3	ReLU	1	Add1_2	64	12	20	1	Threshold_3	64	12	20	
+ConvNd_15	ConvolutionRistretto	1	Threshold_3	64	12	20	1	ConvNd_15	32	12	20	
+Threshold_4	ReLU	1	ConvNd_15	32	12	20	1	Threshold_4	32	12	20	
+ConvNd_16	ConvolutionRistretto	1	Threshold_4	32	12	20	1	ConvNd_16	16	12	20	
+ConvNd_17	ConvolutionRistretto	1	ConvNd_16	16	12	20	1	ConvNd_17	16	12	20	
+ConvNd_18	ConvolutionRistretto	1	ConvNd_17	16	12	20	1	ConvNd_18	32	12	20	
+Threshold_5	ReLU	1	ConvNd_18	32	12	20	1	Threshold_5	32	12	20	
+Add1_3	EltwiseRistretto	2	Threshold_5	32	12	20	Threshold_4	32	12	20	1	Add1_3	32	12	20	
+ConvNd_19	DeconvolutionRistretto	1	Add1_3	32	12	20	1	ConvNd_19	16	24	40	
+ConvNd_20	ConvolutionRistretto	1	Threshold_2	32	24	40	1	ConvNd_20	16	24	40	
+Add1_4	EltwiseRistretto	2	ConvNd_19	16	24	40	ConvNd_20	16	24	40	1	Add1_4	16	24	40	
+Threshold_6	ReLU	1	Add1_4	16	24	40	1	Threshold_6	16	24	40	
+ConvNd_21	ConvolutionRistretto	1	Threshold_6	16	24	40	1	ConvNd_21	8	24	40	
+ConvNd_22	ConvolutionRistretto	1	ConvNd_21	8	24	40	1	ConvNd_22	8	24	40	
+ConvNd_23	ConvolutionRistretto	1	ConvNd_22	8	24	40	1	ConvNd_23	16	24	40	
+Threshold_7	ReLU	1	ConvNd_23	16	24	40	1	Threshold_7	16	24	40	
+Add1_5	EltwiseRistretto	2	Threshold_7	16	24	40	Threshold_6	16	24	40	1	Add1_5	16	24	40	
+ConvNd_24	DeconvolutionRistretto	1	Add1_5	16	24	40	1	ConvNd_24	8	48	80	
+ConvNd_25	ConvolutionRistretto	1	Threshold_1	16	48	80	1	ConvNd_25	8	48	80	
+Add1_6	EltwiseRistretto	2	ConvNd_24	8	48	80	ConvNd_25	8	48	80	1	Add1_6	8	48	80	
+Threshold_8	ReLU	1	Add1_6	8	48	80	1	Threshold_8	8	48	80	
+ConvNd_26	ConvolutionRistretto	1	Threshold_8	8	48	80	1	ConvNd_26	4	48	80	
+ConvNd_27	ConvolutionRistretto	1	ConvNd_26	4	48	80	1	ConvNd_27	4	48	80	
+ConvNd_28	ConvolutionRistretto	1	ConvNd_27	4	48	80	1	ConvNd_28	8	48	80	
+Threshold_9	ReLU	1	ConvNd_28	8	48	80	1	Threshold_9	8	48	80	
+Add1_7	EltwiseRistretto	2	Threshold_9	8	48	80	Threshold_8	8	48	80	1	Add1_7	8	48	80	
+ConvNd_29	ConvolutionRistretto	1	Add1_7	8	48	80	1	ConvNd_29	8	48	80	
+ConvNd_30	DeconvolutionRistretto	1	ConvNd_29	8	48	80	1	ConvNd_30	8	96	160	
+ConvNd_31	DeconvolutionRistretto	1	ConvNd_30	8	96	160	1	ConvNd_31	2	192	320	

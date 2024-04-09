@@ -1,0 +1,92 @@
+syntax = "proto3";
+package minieye;
+
+// topic : "uss_output"
+
+enum ObstacleType {
+  kNone = 0;                              // 正常freespcae检测点
+  kPoint = 1;                             // 点
+  kSegment = 2;                           // 线段
+}
+
+message Point2D {
+  float x = 1;      // 单位：米
+  float y = 2;
+}
+
+message CornerPt {
+  uint32 id = 1;                          // 角点索引
+  Point2D vehicle_pt = 2;                 // 车身坐标系下的物理坐标（m）
+}
+
+message UssParkingSlot {
+  enum SlotType {
+      kUnknown = 0;                         // 未知车位
+      kVertical = 1;                        // 垂直车位
+      KParallel = 2;                        // 水平车位
+      KDiamond = 3;                         // 斜车位
+  }
+
+  enum ParkingStage {
+      kPsDefault = 0;                         // 默认值
+      kPsDiscontent = 1;                      // 不满足几何条件约束的车位
+      kPsOutside = 2;                         // 车身在车位外时探测到的车位
+      kPsInside = 3;                          // 车身在车位内时探测到的车位
+      KInsideContinuously = 4;                //stage5后持续发出车位
+  }
+
+  uint32 id = 1;                              // 车位索引编号
+  SlotType type = 2;                          // 车位类型
+  double width = 3;                           // 车位宽（m）
+  double length = 4;                          // 车位长 (m)
+  ParkingStage parking_stage = 5;             // 泊车Stage
+  repeated CornerPt corner_pts = 6;           // ABCD点坐标,对应id:1~4
+  bool is_left_ps = 7;                        // 是否为左侧车位
+  uint64 single_tick = 8;                     // 时间戳，单位 us
+}
+
+enum TriangleType {
+  kTriangleRS_R = 0;
+  kTriangleR_RM = 1;
+  kTriangleRM_LM = 2;
+  kTriangleLM_L = 3;
+  kTriangleL_LS = 4;
+}
+
+message Obstacle {
+  ObstacleType type = 1;            // 障碍物类型
+  uint32 id = 2;                    // 用来唯一表示一个障碍物的id
+  float score = 3;                  // 置信度
+  Point2D vehPt0 = 4;               // 起点
+  Point2D vehPt1 = 5;               // 终点，若是点类型则与起点一致
+  TriangleType triangle_type = 6;   // 障碍物探头
+  uint64 single_tick = 7;           // 时间戳，单位 us
+}
+
+message Emap {
+  enum EMapConfidence{
+        kEMCDegreeNull = 0;
+        kEMCDegreeLow = 1;
+        kEMCDegreeFuzzy = 2;
+        kEMCDegreeHigh = 3;
+    }
+  uint32 id = 1;                // 点迹个数
+  EMapConfidence n = 2;         // 置信度
+  Point2D vehPt = 3;            // emap坐标
+  bool is_left_point = 4;       // 是否为左侧点
+  uint64 single_tick = 5;       // 时间戳，单位 us
+}
+
+message UssOutput {
+  uint64 timestamp = 1;         // 管理面时间戳，单位 us
+  uint64 frame_id = 2;
+  uint64 tick = 3;              // 数据面时间戳，单位 us
+  repeated UssParkingSlot parkslots = 4;        // 车位列表,每次输出左右各1个最新车位，更新周期50ms
+  repeated Obstacle obstacle_rects = 5;         // 障碍物坐标输出接口，检测到几个输出几个，前后各最多10个，共20个，更新周期20ms
+  repeated Emap emap = 6;                       // emap输出接口,每次输出左右各1个最新点,后端拼接，更新周期20ms
+}
+
+message UssOutputList{
+  uint64 tick = 1;
+  repeated UssOutput uss_outputs = 2;
+}

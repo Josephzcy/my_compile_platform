@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package minieye.parking;
+
+enum SolutionType {
+  NONE = 0;
+  FIXEDPOS = 1;
+  FIXEDHEIGHT = 2;
+  FLOATCONV = 4;
+  WIDELANE = 5;
+  NARROWLANE = 6;
+  DOPPLER_VELOCITY = 8;
+  SINGLE = 16;
+  PSRDIFF = 17;
+  WAAS = 18;
+  PROPOGATED = 19;
+  OMNISTAR = 20;
+  L1_FLOAT = 32;
+  IONOFREE_FLOAT = 33;
+  NARROW_FLOAT = 34;
+  L1_INT = 48;
+  WIDE_INT = 49;
+  NARROW_INT = 50;
+  RTK_DIRECT_INS =
+      51;  // RTK filter is directly initialized from the INS filter.
+  INS_SBAS = 52;
+  INS_PSRSP = 53;
+  INS_PSRDIFF = 54;
+  INS_RTKFLOAT = 55;
+  INS_RTKFIXED = 56;
+  INS_OMNISTAR = 57;
+  INS_OMNISTAR_HP = 58;
+  INS_OMNISTAR_XP = 59;
+  OMNISTAR_HP = 64;
+  OMNISTAR_XP = 65;
+  PPP_CONVERGING = 68;
+  PPP = 69;
+  INS_PPP_CONVERGING = 73;
+  INS_PPP = 74;
+}
+
+message AsensingINSData
+{
+    uint64 timestamp = 1;  //  us 测量时候的管里面时间戳
+    uint64 tick = 2;  // us 管理面时间戳
+    //SolutionType sol_type = 3;              // 18位应为SBAS solution
+    // Roll/pitch/yaw .
+    double roll = 4;                 // 车体右倾为正 [rad] 
+    double pitch = 5;             // 车体抬头为正 [rad]
+    double yaw = 6;                // 正北顺时针到正南为正 [rad]
+
+    double gyro_x = 7;            // 符合右手定则 [rad/s]
+    double gyro_y = 8;            // 符合右手定则 [rad/s]
+    double gyro_z = 9;            // 符合右手定则 [rad/s]
+
+    double acc_x = 10;            // 符合右手定则 [m/m^2]
+    double acc_y = 11;            // 符合右手定则 [m/m^2]
+    double acc_z = 12;            // 符合右手定则 [m/m^2]
+
+    double latitude = 13;           // 纬度，北半球为正 [rad]
+    double longitude = 14;       // 经度，东半球为正 [rad]
+    double height = 15;              // 椭球高，向上为正[m]
+
+    double east_velocity = 16;          // 东向速度 [m/s]
+    double north_velocity = 17;       // 北向速度[m/s]
+    double up_velocity = 18;       // 向上为正[m/s]
+
+    uint32  status = 19;
+    bool pos_alignment = 20;
+    bool vel_alignment = 21;
+    bool att_alignment = 22;      // 姿态
+    bool yaw_alignment = 23;    // 航向角
+
+    uint32 type = 24;
+    int32 data1 = 25;
+    int32 data2 = 26;
+    int32 data3 = 27;
+
+    float latitude_std_dev = 28;      // latitude standard deviation (m)
+    float longitude_std_dev = 29;  // longitude standard deviation (m)
+    float height_std_dev = 30;         // height standard deviation (m) 
+    float vn_std_dev = 31;      // [m/s]
+    float ve_std_dev = 32;      // [m/s]
+    float vd_std_dev = 33;      // [m/s]
+    float roll_std_dev = 34;      // [m/s]
+    float pitch_std_dev = 35;      // [m/s]
+    float yaw_std_dev = 36;      // [m/s]
+    double temperature = 37;           // 摄氏度
+    uint32 position_type = 38;
+    uint32 num_sats = 39;
+    uint32 heading_type = 40;
+    bool  odometry_exist = 41;
+}
+
+message AsensingINSDatas
+{
+    repeated AsensingINSData asensing_ins_datas = 1;
+}

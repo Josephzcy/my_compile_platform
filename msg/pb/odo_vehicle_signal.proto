@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package minieye;
+
+// 带独立时间戳的车身信号
+message SignalTimestamp {
+    float value = 1;
+    uint64 tick = 2;             // MCU收到can报文时的数据面时间(微秒)
+}
+
+/*
+    {
+            "topic": "odo_vehicle_signal",
+            "dds_mode": "shm",
+            "data_refresh_rate": 50,
+            "buff_num": 100,
+            "//": "elem_max_size待实测确定",
+            "elem_max_size": 1000
+    }
+*/
+// topic : "odo_vehicle_signal"
+// breif : 带独立时间戳的车身周期性信号，定位模块使用，高频50hz
+message OdoVehicleSignal {
+    enum SignalType {
+        kCanSpeed = 0;                         // 车速 (km/h)，无效值：-1000；
+        kSteeringWheelAngle = 1;               // 方向盘转角 (deg)，车身坐标系下：左负右正，后负前正，无效值：-1000；
+        kYawRate = 2;                          // YawRate 横摆角速度,rad/s, 车身坐标系下：左负右正，后负前正；无效值：-1000；ps：若有offset需要处理完后写入
+        kGearMode = 3;                         // 档位模式 0 invalid, 1 Neutral, 2 Driving, 3 Reverse, 4 Parking，无效值：-1000；
+        kLongiAcceleration = 4;                // 纵向加速度，加速为正，减速为负，无效值：-1000；ps：若有offset需要处理完后写入
+        kRLWheelPulseCounter = 5;              // 左后轮当前轮速脉冲计数， 无效值：-1000；
+        kRRWheelPulseCounter = 6;              // 右后轮当前轮速脉冲计数， 无效值：-1000；
+        kRLWheelRotate = 7;                    // 左后车轮旋转方向，2 "Standstill" 1 "Backward" 0 "Forward" ;无效值：-1000； 
+        kRRWheelRotate = 8;                    // 右后车轮旋转方向，2 "Standstill" 1 "Backward" 0 "Forward" ;无效值：-1000；
+        // 后期针对四驱车,可考虑增加前轮轮速脉冲计数
+    }
+    map<int32, SignalTimestamp> signals = 1;   // pair : <SignalType, SignalTimestamp> 带独立时间戳的车身信号
+    uint64 timestamp = 2;                      // dds发布时的管理面时间(毫秒)
+    uint64 tick = 3;                           // dds发布时的数据面时间(毫秒)
+}
+
+
+/*
+    {
+            "topic": "apa_vehicle_signal",
+            "dds_mode": "shm",
+            "data_refresh_rate": 20,
+            "buff_num": 100,
+            "//": "elem_max_size待实测确定",
+            "elem_max_size": 1000
+    }
+*/
+// topic : "apa_vehicle_signal"
+// breif : 泊车专用周期性车身信号，低频20hz
+message ApaVehicleSignal {
+    enum SignalType {
+        /* 胎压 */
+        kFLTirePressure = 0;                   // 前左轮（front-left） 胎压，单位：kpa，无效值：-1；
+        kFRTirePressure = 1;                   // 前右轮（front-right）胎压，单位：kpa，无效值：-1；
+        kRLTirePressure = 2;                   // 后左轮（rear-left）  胎压，单位：kpa，无效值：-1；
+        kRRTirePressure = 3;                   // 后右轮（rear-right） 胎压，单位：kpa，无效值：-1；
+
+        /* IMU标定模块 */
+        kMotorSpeed = 4;                       // 电机转速, 单位: r/min, 无效值：-1000
+
+        /* 状态管理用状态信号 */
+        kLngCtrlMode = 5;                      // 纵向控制状态，0x0 Off，0x1 Active，0x2 Stanby，0x3 Fault，0x4 Reserved， 0x5 Reserved, 无效值：-1000
+        kLatCtrlMode = 6;                      // 横向控制状态，0x0 Off，0x1 Active，0x2 replay_for_control，0x3 Abort，0x4 Fault，0x5 Reserved, 无效值：-1000
+        kLngCtrlSt = 7;                        // 纵向控制可用状态，0x0 Unavailable，0x1 Available, 无效值：-1000
+        kLatCtrlSt = 8;                        // 横向控制可用状态，0x0 Unabailable，0x1 Available, 无效值：-1000
+        kLngQuitReport = 9;                    // 纵向控制失败原因，0x0 No error，0x1 Vehicle Blocked，0x2 Unexpected GearPosition，0x3 Unexpected EPB Action，0x4 Unexpected GearIntervention，0x5 ESP Fault, 无效值：-1000
+        kLatQuitReport = 10;                   // 横向控制失败原因，0x0 No error，0x1 Over Speed，0x2 Driver interference，0x3 Abnormal CAN Input，0x4 Excess Angle Deviation，0x5 ESP Fault, 无效值：-1000
+        kVehicleReadySt = 11;                  // 车辆ready状态，0x0 No Ready，0x1 Ready, 无效值：-1000
+        kEpbSystemSt = 12;                     // EPB功能状态，0x0 Released，0x1 Applied，0x2 Releasing，0x3 Applying，0x4 Fault_Stop_And_Not_Sure_State，0x5 EPB Fault, 无效值：-1000
+        kChargingGunSt =13;                    // 充电枪状态， 0x0 off, 0x1 on, 无效值：-1000
+        kDriveMode = 14;                       // 驾驶模式，0x0 Normal, 0x1 Sport, 0x2 Econ , 0x3 Winter 无效值：-1000
+        kFoldMirrorsSt = 15;                   // 后视镜折叠状态， 0x0 off 0x1, Active, 无效值：-1000
+    }
+    map<int32, float> signals = 1;             // pair : <SignalType, value> 车身信号
+    uint64 timestamp = 2;                      // dds发布时的管理面时间(毫秒)
+    uint64 tick = 3;                           // dds发布时的数据面时间(毫秒)
+}

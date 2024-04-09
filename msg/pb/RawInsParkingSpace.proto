@@ -1,0 +1,32 @@
+syntax = "proto3";
+package perception;
+
+message RawCornerPt {
+    bool is_entry = 1;
+    bool is_good = 2;
+    double x = 3;
+    double y = 4;
+    int32 mask_id = 5;
+}
+
+message RawRodPt {
+    double x = 1;
+    double y = 2;	
+}
+
+message RawInsParkingSlot {
+    double confidence = 1;                  // 置信度
+    RawCornerPt center_pt = 2;              // 中心点
+    bool occupied = 3;                      // 车位是否被占用
+    repeated RawCornerPt corner_pts = 4;    // 四个角点的图像坐标（pixel）
+    bool exist_rod = 5;                     // 车位是否存在限位杆
+    repeated RawRodPt rod_pts = 6;          // 限位杆四个点的图像坐标(pixel)
+}
+
+message RawInsParkingSpace {
+    uint64 frame_id = 1;
+    uint64 timestamp = 2;                   // 管理面时间(us)
+    uint64 tick = 3;                        // 数据面时间(us)
+    repeated RawInsParkingSlot ins_ps = 4;  // 多个车位组成的数组
+    repeated RawRodPt hm_rod_pts = 5;       // 多个限位杆点的数组
+}

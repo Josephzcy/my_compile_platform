@@ -1,0 +1,191 @@
+syntax = "proto3";
+import "camera.proto";
+package minieye;
+
+/* 
+   {
+       "topic": "calib_param",
+       "dds_mode": "shm",
+       "data_refresh_rate": 20,
+	   "buff_num": 20, 
+       "elem_max_size": 1000
+   }
+ */
+message CalibParam {
+	double camera_pitch = 1;
+	double camera_yaw = 2;
+	double camera_roll = 3;
+	double camera_cu = 4;
+	double camera_cv = 5;
+	double camera_fov_h = 6;
+	double camera_fov_w = 7;
+	double camera_height = 8;
+	double left_dist_to_camera = 9;
+	double right_dist_to_camera = 10;
+	double front_dist_to_camera = 11;
+	double front_wheel_camera_dist = 12;
+	uint32 camera_id = 13;                     // 摄像头id 
+}
+
+message HomographyMatrix {
+    uint32 src_camera_id = 1;                  // 源摄像头id
+    uint32 dst_camera_id = 2;                  // 目标摄像头id
+    repeated float src2dst_h_matrix = 3;       // src到dst H矩阵 
+}
+
+enum PreCheckState {
+    kPreCheckAbnormal = 0;         // 前置检查失败，在一次程序生命周期中不会改变，直到再次触发前置检查
+    kPreCheckPass = 1;             // 前置检查通过，在一次程序生命周期中不会改变，直到再次触发前置检查
+    kPreCheckInProcess = 2;        // 前置检查运行中
+    kPreCheckNotStart = 3;         // 未开始前置检查
+};
+
+enum PrecheckErrCode {
+    kFLDoorAjar = 0;               // 左前车门打开
+    kRLDoorAjar = 1;               // 左后车门打开
+    kFRDoorAjar = 2;               // 右前车门打开
+    kRRDoorAjar = 3;               // 右后车门打开
+    kTurnLightOn = 4;              // 转向灯打开
+    kHighBeamOn = 5;               // 远光灯打开
+    kLowBeamOn = 6;                // 近光灯打开
+    kTGOpen = 7;                   // 后备箱打开
+    kHoodOpen = 8;                 // 引擎盖打开
+    kMirrorFold = 9;              // 后视镜折叠
+    kWiperMoving = 10;             // 雨刷移动
+}
+
+/*
+	{
+	  "topic": "pre_check_req",
+	  "dds_mode": "shm",
+	  "buff_num": 20,
+	  "elem_max_size": 256
+	 }
+*/
+message PreCheckReq {
+    bool need_check = 1;          // 是否启动前置检查
+}
+
+/*
+	{
+	  "topic": "pre_check_rsp",
+	  "dds_mode": "shm",
+	  "buff_num": 20,
+	  "elem_max_size": 256
+	 }
+*/
+message PreCheckRsp {
+    PreCheckState state = 1;          // 前置检查状态
+    PrecheckErrCode err_code = 2;     // 前置检查错误码
+}
+
+enum CalibResState {
+    kCalibStart = 0;               // 开始触发标定
+    kNotCalib = 1;                 // 从未标定成功过，当前也未在标定过程中
+    kCalibrated = 2;               // 之前标定成功过，当前未在标定过程中
+    kCalibInProcess = 3;           // 标定计算过程中
+    kCalibPause = 4;               // 标定暂停
+    kCalibPass = 5;                // 标定成功，在一次程序生命周期中不会改变，直到再次触发标定
+    kCalibFailed = 6;              // 标定失败，在一次程序生命周期中不会改变，直到再次触发标定
+};
+
+enum CalibErrCode {
+    kCECSuccess = 0;               // 标定成功或无错误
+    kCECInProcess = 1;             // 标定过程中
+    kCECImageNull = 2;             // 图像未获取到或格式尺寸不对
+    kCECNoTargetInfo = 3;          // 标靶信息文件未找到
+    kCECTargetInfoErr = 4;         // 标靶信息文件格式不对
+    kCECDetTargetFail = 5;         // 未在图像中监测到指定格式的标靶
+    kCECInterLogicErr = 6;         // 标定程序内部逻辑错误（抛出异常，内存错乱等）
+    kCECInvalidPitch = 7;          // 标定pitch值超出合法范围
+    kCECInvalidYaw = 8;            // 标定yaw值超出合法范围
+    kCECInvalidRoll = 9;           // 标定roll值超出范围
+    kCECInvalidX = 10;             // 标定x值超出范围
+    kCECInvalidY = 11;             // 标定y值超出范围
+    kCECInvalidZ = 12;             // 标定z值超出范围
+    kCECOvertime = 13;             // 标定超时
+    kCECPersistFailed = 14;        // 标定结果保存失败
+    kCECNoDynCalibConf = 15;       // 动态标定配置文件未找到
+    kCECDynCalibConfErr = 16;      // 动态标定配置文件格式不对
+    kCECTooManyCar = 17;           // 动态标定时车辆周围持续车流量过大
+    kCECEmptyRoad = 18;            // 动态标定时车辆周围持续空旷
+    kCECCalibStop = 19;            // 标定程序被外界停止
+    kCECImuCheckFail = 20;         // 标定时IMU检查失败
+    kCECHighSpeed = 21;            // 标定时车速过高
+    kCECLowSpeed = 22;             // 标定时车速过低
+    kCECYawRateCheckFail = 23;     // 标定时车辆转向角速度过大
+    kCECHighOcclusion = 24;        // 标定时车辆周围遮挡过多
+    kCECHighBrightness = 25;       // 标定时环境亮度过高
+    kCECLowBrightness = 26;        // 标定时环境亮度过低
+    kCECAlgo = 27;                 // 算法错误
+};
+
+enum CalibMethod {
+    UNKNOWN = 0;             // 未定义
+    EOL = 1;                 // 下线标定,标靶0
+    STATIC_LANE = 2;         // 静态车道线
+    DYNAMIC_LANE = 3;        // 动态车道线
+    PARAM_TO_CALIB = 4;      // 参数写入标定
+    CALIB_RESULT_REQ = 5;    // 标定结果请求
+    STOP_CALIB = 6;          // 停止标定
+    PAUSE_CALIB = 7;         // 暂停标定
+    CONTINUE_CALIB = 8;      // 继续标定
+    TARGET1 = 10;            // 标靶1
+    TARGET2 = 11;            // 标靶2
+    TARGET3 = 12;            // 标靶3
+    TARGET4 = 13;            // 标靶4
+    TARGET5 = 14;            // 标靶5
+    SNA = 15;                // SNA
+
+    ONLINE_AFTERSALE = 16;   // 在线售后标定
+    ONLINE_AUTO = 17;        // 在线自动标定
+};
+
+message VehicleParam {
+    double car_width = 1;          // 车辆左右轮外侧距离
+    double wheel_base = 2;         // 轴距
+    double front_overhang = 3;     // 前悬长
+    double rear_overhang = 4;      // 后悬长
+}
+
+/*
+	{
+	  "topic": "calib_req",
+	  "dds_mode": "shm",
+	  "buff_num": 20,
+	  "elem_max_size": 2560
+	 }
+*/
+
+message CalibReqDetail {
+    int32 camera_id = 1;                     // 相机id
+    int32 calib_method = 2;                  // 标定方式  eol12345  service  force   stop_calib  query stop_query
+    CameraParam designated_cam_param = 3;    // 外界指定相机参数
+}
+
+message CalibReq {
+    repeated CalibReqDetail details = 1;    // 各相机标定需求
+    VehicleParam vhs_param = 2;             // 车身参数
+}
+
+/*
+	{
+	  "topic": "calib_rsp",
+	  "dds_mode": "shm",
+	  "buff_num": 20,
+	  "elem_max_size": 2560
+	 }
+*/
+
+message CalibRspDetail {
+    int32 camera_id = 1;                     // 相机id
+    int32 calib_method = 2;            // 标定方式
+    CalibResState state = 3;                 // 标定状态
+    CalibErrCode err_code = 4;               // 标定错误码
+    double process = 5;                      // 标定进度
+    CameraParam calib_res = 6;               // 标定结果相机参数
+}
+
+message CalibRsp {
+    repeated CalibRspDetail details = 1;    // 各相机标定反馈
+}

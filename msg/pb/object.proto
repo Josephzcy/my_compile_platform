@@ -1,0 +1,276 @@
+syntax = "proto3";
+import "geometry.proto";
+import "data_source.proto";
+import "calib_param.proto";
+import "vehicle_signal.proto";
+import "object_warning.proto";
+import "camera.proto";
+// VERSION
+// 0.6
+
+package perception;
+
+message Object {
+
+    // 目标检测分类
+    enum ObjectType { 
+        kNone = 0;
+        kVehicle = 1;                           // 车辆 
+        kPed = 2;                               // 行人
+        kBike = 3;                              // 二轮车
+        kCone = 4;                              // 锥桶
+
+        kVehicleWheel = 5;                      // 车轮
+        kVehiclePlate = 6;                      // 车牌
+        kPedHead = 7;                           // 人头
+
+        kSmallTrafficSign = 10;                 // 小标牌
+        kBigTrafficSign = 11;                   // 大标牌
+        kTrafficLight = 12;                     // 交通信号灯
+		kAnimals = 13;                          // 动物
+        kVehicleLight = 14;                     // 车灯
+        kStreetLamp = 15;                       // 路灯
+		kObjectTypeNum = 16;
+    }
+
+    // 车辆姿态分类
+    enum VehiclePose {
+        kInvalid = 0;                            // 背景
+        kLeftTail = 1;                           // 左侧同向车
+        kMidTail = 2;                            // 中间同向车
+        kRightTail = 3;                          // 右侧同向车
+        kLeftHead = 4;                           // 左侧对向车
+        kMidHead = 5;                            // 中间对向车
+        kRightHead = 6;                          // 右侧对向车
+        kLeftSide = 7;                           // 朝左横向车
+        kRightSide = 8;                          // 朝右横向车
+        kLeftCutIn = 9;                          // 左侧切入
+        kRightCutIn = 10;                        // 右侧切入
+        kLeftCutOut = 11;                        // 左侧切出
+        kRightCutOut = 12;                       // 右侧切出
+        kOccluded = 13;                          // 车头遮挡/车尾遮挡/横向遮挡
+		kUnknownPose = 20;                       // unknown pose
+    }
+
+	// 锚点信息
+	enum AnchorPtInfo {
+		kVehicleHead = 0;
+		kVehicleTail = 1;
+		kVehicleFrontWheel = 2;                 // deprecated
+		kVehicleRearWheel = 3;                  // deprecated
+		kVehicleSomeWheel = 4;
+        kDetectBottomCenter = 5;
+        kVehicleLeftFrontWheel = 6;
+        kVehicleLeftRearWheel = 7;
+        kVehicleRightFrontWheel = 8;
+        kVehicleRightRearWheel = 9;
+	}
+
+	enum MeasureType {
+		kVehicleMeasureHeadReg = 0;
+		kVehicleMeasureTailReg = 1;
+		kVehicleMeasureDetect = 2;
+		kVehicleMeasureWheel = 3;
+		kVehicleMeasurePlate = 4;
+	}
+
+    // 车型细分类
+    enum VehicleClass {
+        kNegative = 0;                           // 背景
+        kBus = 1;                                // 大巴
+        kCar = 2;                                // 小轿车,suv
+        kMiniBus = 3;                            // 面包车
+        kBucketTruck = 4;                        // 斗卡
+        kContainerTruck = 5;                     // 箱卡
+        kTricycle = 6;                           // 三轮车
+        kTanker = 7;                             // 油罐车,晒水车（车身带有圆形,椭圆形,半圆形的罐）
+        kCementTankTruck = 8;                    // 水泥罐车
+        kPickup = 9;                             // 皮卡
+        kSedimentTruck  = 10;                    // 渣土车
+        kIveco = 11;                             // 依维柯
+        kSpecialCar = 12;                        // 异型车
+        kCityAuto = 13;                          // 市政车
+        kVehicleUnknown = 14;                    // 未知车辆
+    }
+
+	enum TrafficLightClass {                     // 红绿灯分类
+		kTLUnknown = 0;
+		kTLMix2Horizontal = 1;                   // 水平两联红绿灯
+		kTLMix2Vertical = 2;                     // 垂直两联红绿灯
+		kTLMix3Horizontal = 3;                   // 水平三联红绿灯
+		kTLMix3Vertical = 4;                     // 垂直三联红绿灯
+		kTLSingle = 5;                           // 单灯 
+	}
+
+	enum TrafficLightStatus {                    // 红绿灯状态
+		kTLSUnknown = 0;
+		kTLSRed = 1;                             // 红灯
+		kTLSGreen = 2;                           // 绿灯
+		kTLSYellow = 3;                          // 黄灯
+	}
+
+    enum VehicleLightClass {                     // 车灯分类
+        kVLUnknown = 0;
+        kVLHeadLight = 1;                        // 车头灯
+        kVLTailLight = 2;                        // 车尾灯
+        kVLBrakeLight = 4;                       // 刹车等
+        kVLTurnLeftLight = 8;                    // 左变道灯
+        kVLTurnRightLight = 16;                  // 右变道灯
+    }
+
+    enum VehicleLightStatus {                    // 车灯状态
+        kVLSUnknown = 0;
+        kVLSOn = 1;                               // 开
+        kVLSOff = 2;                              // 关
+        kVLSFlash = 3;                            // 闪烁 
+    }
+
+	enum MoveState {
+		kMSUnknown = 0;                          // 未知
+		kEgoDirectionDriving = 1;                // 跟车流方向一致,向前行驶       
+		kEgoDirectionStopped = 2;                // 跟车流方向一致, 停止
+		kEgoDirectionReversing = 3;              // 跟车流方向一致, 横穿
+		kOnComming = 4;                          // 对向来车
+		kCrossing = 5;                           // 横穿车辆
+		kStationary = 6;                         // 静止
+	}
+
+    message ImageInfo {
+        perception.common.Rect2f det_rect = 1;               // 检测框
+        perception.common.Rect2f reg_rect = 2;               // 回归框(尾部框)
+        perception.common.Rect2f track_rect = 3;             // 跟踪框
+        perception.common.Rect2f smooth_rect = 4;            // 光流跟踪框
+        perception.common.Rect2f plate_rect = 5;             // 车牌框
+        repeated perception.common.Rect2f wheel_list = 6;    // 车轮踪框
+        repeated perception.common.Point2f reg_pt_list = 7;  // 回归点列表
+
+    
+        perception.common.Box3D box = 10;                    // 3dbox
+		minieye.CamID camera_id = 11;                        // 对应那个摄像头 
+    }
+
+    enum VehicleRigidAnchor {
+        kVRARear = 0;
+        kVRARearWheel = 1;
+        kVRAHeadWheel = 2;
+        kVRAHead = 3;
+        kVRAMaxNum = 4;
+    }
+
+    message VehicleRigid {
+        // 长度方向，刚体量测细节
+        repeated perception.common.Float meas_along_length = 1;    // kVRAMaxNum * kVRAMaxNum                
+        perception.common.Float w = 2;                             // width
+        perception.common.Float h = 3;                             // height
+    }
+
+    message WorldInfo {
+        perception.common.XYZ vel = 1;                   // 速度
+        perception.common.XYZ rel_vel = 2;               // 相对速度
+        perception.common.XYZ acc = 3;                   // 加速度
+        perception.common.XYZ pos = 4;                   // 位置
+        perception.common.Size3D  size = 5;              // 长宽高
+        perception.common.Angle3f angle = 6;             // 与自车的中心夹角 左边缘夹角 右边缘夹角
+    
+        perception.common.Box3D box = 10;                // 3dbox
+    
+        uint32 id = 11;                                      // 目标id (deprecated, 以object的id为准)
+        /*
+         * cls : 类型细分类(子类) : 
+         * VehicleClass,  TrafficLightClass, VehicleLightClass  
+         */
+        perception.common.Int cls = 12;                      
+        float val = 13;                                      // 分类值, 小标牌限高/限重限速/TrafficLightStatus/值
+        perception.common.Int pose = 14;                     // 姿态分类 : VehiclePose 
+        float ttc = 15;                                      // 碰撞时间
+        float headway = 16;                                  // 时距=距离/自车速度
+        int32 cipv = 17;                                     // 前方目标是否为关键车(CIPV)，关键车为1，非关键车为0
+        int32 cipp = 18;                                     // 前方目标是否为关键人(CIPP)，关键人为1，非关键人为0
+        perception.common.PoseAngle pose_angle = 19;         // 姿态角，单位：度，左正右负, ±180 
+        perception.common.Int  motion_state = 20;            // 运动状态，参考MoveState定义
+		AnchorPtInfo anchor = 21;                            // 测距对应的锚点信息
+
+		perception.common.Point3D pos_var = 22;              // (deprecated) pos的方差
+		perception.common.Point3D size_var = 23;             // (deprecated) 长宽高的方差
+		perception.common.Point3D pose_angle_var = 24;       // (deprecated) pose_angle的方差
+        perception.common.XYZ anchor_offset = 25;            // 锚点的offset
+        repeated perception.common.XY odom_trace = 26;       // 历史轨迹
+    }
+
+	message FusionInfo { // fusion要用到的关联信息
+		repeated ImageInfo associated_image_infos = 1;       // 关联到的各个摄像头的检测框
+		repeated WorldInfo associated_world_infos = 2;       // 关联到的各个摄像头的检测框
+		repeated float associated_conf_matrix = 3;           // 关联置信度 num * num
+		WorldInfo fusion_world_info = 4;                     // 多视fusion后的结果
+	}
+
+    enum TrackStatus {
+        kTSUnknown = 0;
+        kTSFirstDetectd = 1;                                // 第一次检测 
+        kTSTracking = 2;                                    // 稳定跟踪 (只针对关键车)
+        kTSPredict = 3;                                     // 预测 
+    }
+
+    enum SelectLevelStatus {                 
+        kSLOriginDet = 0;                                  // 原始检测
+        kSLDetAfterInnerROINMS = 1;                        // 经过ROI内NMS后的检测
+        kSLDetAfterCrossROINMS = 2;                        // 经过ROI间NMS后的检测
+        kSLReservered = 3;                                 // 保留字段
+        kSLCandidateDet = 4;                               // 候选目标
+    }
+
+    int32 hit_id = 1;                                      // 目标检测ID (deprecated, 以hit_type为准)
+    ObjectType hit_type = 2;                               // 目标检测类别enum
+    string hit_type_str = 6;                               // 目标检测类别string
+    float confidence = 3;                                  // 检测置信度(综合)
+
+    int32 frame_cnt = 4;                                   // frame count
+    int32 life_time = 5;                                   // optional live ms 
+    uint64 time_creation = 7;                              // 障碍物被识别的时间戳(微秒)
+
+    ImageInfo image_info = 8;                              // 图像信息 (前视1v专用)
+    WorldInfo world_info = 9;                              // 车辆坐标系下信息 (前视1v专用)
+
+    int32 track_status = 10;                               // track状态
+    int32 trace_status = 11;                               // deprecated 
+    int32 select_level = 12;                               // 选择等级
+
+	uint32 id = 15;                                         // object id
+	FusionInfo fusion_info = 16;                           // fusion需要信息 
+	MeasureType measure_type = 17;                         // 量测类型
+
+	uint64 timestamp = 18;                                 // 当前时刻 timestamp (微秒)
+	uint64 frame_id = 19;                                  // 当前帧 frame id
+    
+    perception.common.Int lane_assignment = 21;            // 目标所在车道信息                      
+    perception.common.Float has_cut_lane = 22;             // 是否侵道 ( > 0 - 侵道, < 0 - 未侵道, 其值为侵入的多少, 单位m)                      
+    VehicleRigid veh_rigid = 23;                           // 车辆刚体信息
+
+    perception.common.FloatArray features = 24;            // 特征向量
+
+	repeated Object key_components = 60;                   // 组件信息
+}
+
+message ObjectList {
+    repeated Object list = 1;                              // object list
+
+    string version = 3;                                    // 版本号
+
+	uint64 frame_id = 4;                                   // 帧IDs
+    uint64 timestamp = 5;                                  // utc时戳, us
+
+    perception.object.Warning warning = 6;                 // 告警
+    repeated perception.common.Rect2f roi_list = 7;        // 检测ROI列表
+
+    uint64 tick = 9;                                       // tick时戳, us
+    uint64 start_time_us = 10;                             // 算法流程开始时间
+    uint64 end_time_us = 11;                               // 算法流程结束时间
+    repeated uint64 profiling_time = 12;                   // 模块耗时列表
+
+	minieye.DataSource data_source = 15;                   // 描述数据源 字节数: 4
+    minieye.CalibParam calib_param = 16;                   // 标定参数
+    minieye.VehicleSignal vehicle_signal = 17;             // 车身信号
+	minieye.CameraParam camera_param = 18;                 // 相机内外参数(多v融合结果不适用)
+	minieye.CamID cam_id = 19;                             // 摄像头id(cam_id.id(), 等同instance_id)
+	uint32 cam_prj_id = 20;                                // 用于进行投影变换的id
+}

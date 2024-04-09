@@ -1,0 +1,63 @@
+syntax = "proto3";
+// VERSION
+// 0.1
+package minieye.parking;
+
+/*
+       {
+           "topic": "ap_map_response",
+           "dds_mode": "shm",
+           "data_refresh_rate": 100,
+           "buff_num": 10,
+           "elem_max_size": 1000
+       }
+*/
+
+
+
+message ApMapResponse {
+  message Pose {
+    double x = 1;  //  [x, y, z] [meter, meter, meter] [roll, pitch, yaw] [rad, rad, rad] intrinsic sequence [z y x]  in world coordinate (East/North/Up)
+    double y = 2;  
+    double z = 3;  
+    double qw = 4;  
+    double qx = 5;  
+    double qy = 6;  
+    double qz = 7;  
+  }
+  enum ApResponseType {
+    kChooseMap = 0;
+
+    kParkingMappingReadyToMapping = 1; // 建图ok
+    kParkingMapping = 2; // 真正的建图状态
+    kParkingMappingDone = 3; // 藏起来的挂起状态
+    kParkingMappingFailed = 4; // 藏起来的挂起状态
+
+    kParkingLocalizationReadyToMapping = 5; // 建图ok，匹配ok，
+    kParkingLocalizationReadyToLocalization = 6; // 建图ok，匹配ok，过了建图开始的点
+    kParkingLocalization = 7; // 真正的定位状态
+    kParkingLocalizationOutOfMap = 11;
+    kParkingLocalizationDone = 8; // 藏起来的挂起状态
+    kParkingLocalizationFailed = 9; // 藏起来的挂起状态
+    
+    kBackToGround = 10; // 藏起来的挂起状态，代表回到地面但是未走足够的距离
+  };
+
+  enum FailReason {
+    kNotFail = 0;
+    kBackwardTooFar = 1;
+    kSpeeding = 2;
+  };
+
+  uint64 timestamp = 1;            // 管理面时间戳 us
+  uint64 tick = 2;                 // 数据面时间戳 us
+  uint64 frame_id = 3;             // 帧ID
+  Pose ap_enu_to_rt_odom = 4;
+  Pose curr_odom = 6;
+  string nearest_ap_map = 7;
+  ApResponseType ap_response_type = 8;
+  float localization_accuracy = 10; // TODO: 这个暂时是个占位的
+  FailReason fail_reson = 11;
+  double s = 12; // 里程
+  int64 current_ap_map_joint_id = 13;
+}

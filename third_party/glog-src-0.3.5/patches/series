@@ -1,0 +1,3 @@
+0001-Rework-CMake-glog-VERSION-management.patch -p1
+0002-Find-Libunwind-during-configure.patch -p1
+0003-installation-path-fix.patch -p1

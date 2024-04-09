@@ -1,0 +1,77 @@
+syntax = "proto3";
+package perception;
+
+/*
+        {
+            "topic": "gridmap",
+            "dds_mode": "shm",
+            "buff_num": 10,
+            "elem_max_size": 10240
+        },
+*/
+
+
+message Point2D {
+  float x = 1;
+  float y = 2;
+}
+
+enum Class{
+  kVision = 0;
+  kUss = 1;
+}
+
+//freespace增加语义信息类型
+enum Category{
+  kNormal = 0;                              // 正常freespcae检测点
+  kNoCrash = 1;                             // USS检测不可碰撞
+  kRod = 2;                                 // 档杆
+  kVehicle = 3;                             // 车辆
+  kWheelTwo = 4;                            // 二轮车
+  kRider = 5;                               // 骑行人
+  kPed = 6;                                 // 行人
+  kCone = 7;                                // 锥筒/防撞桶
+  kWsign = 8;                               // 三角警示牌/禁停标志
+  kStone = 9;                               // 石墩/柱形石墩
+  kPiles = 10;                              // 铁地桩/塑料地桩
+  kLock = 11;                               // 地锁上锁
+  kPillar = 12;                             // 柱子
+}
+
+enum UssClass{
+  kOthers = 0;                      // freespace
+  kLongRadarFL = 1;                 // 左前长距离雷达
+  kLongRadarFR = 2;                 // 右前长距离雷达
+  kLongRadarBL = 3;                 // 左后长距离雷达
+  kLongRadarBR = 4 ;                // 右后长距离雷达
+  kShortRadarFL = 5;                // 前左短距离雷达
+  kShortRadarFLM = 6;               // 前左中短距离雷达
+  kShortRadarFRM = 7;               // 前右中短距离雷达
+  kShortRadarFR = 8;                // 前右短距离雷达
+  kShortRadarBL = 9;                // 后左短距离雷达
+  kShortRadarBLM = 10;              // 后左中短距离雷达
+  kShortRadarBRM = 11;              // 后右中短距离雷达
+  kShortRadarBR = 12;               // 后右短距离雷达
+  kFusion = 13;                     // 长距雷达融合地图
+}
+
+message FreespaceObstacle {
+  enum Type {
+    UNKNOW = 0;
+    DYNAMIC = 1;          // 动态
+    STATIC = 2;           // 静态
+  }
+  uint32 id = 1;
+  repeated Point2D points = 2;
+  Class class = 3;
+  Category category = 4;
+  UssClass uss_class = 5;
+  float uss_dist = 6;
+}
+
+message FreespaceObstacles {
+  uint64 timestamp = 1;                       // 时戳, milliseconds
+  repeated FreespaceObstacle obstacles = 2;
+  uint64 tick = 3;
+  uint64 frame_id = 4;
+}

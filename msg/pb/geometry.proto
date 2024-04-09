@@ -1,0 +1,192 @@
+// 参考VehicleClass定syntax = "proto3";
+syntax = "proto3";
+package perception.common;
+
+// 对数据的质量评价
+message EvalStats {
+    float mean = 1;      // 均值
+    float std = 2;       // 标准差
+    float prob = 3;      // 置信度
+}
+
+// A general 2D point
+message Point2D {
+	double x = 1;
+	double y = 2;
+    EvalStats eval = 3;
+}
+
+// A general 3D point
+message Point3D {
+	double x = 1;
+	double y = 2;
+	double z = 3;
+    EvalStats eval = 4;
+}
+
+message XYZ {
+    double x = 1;
+    double y = 2;
+    double z = 3;
+    repeated EvalStats evals = 4;
+}
+
+message XY {
+    float x = 1;
+    float y = 2;
+    int64 tm = 3;
+}
+
+message Size3D {
+	double w = 1;
+	double h = 2;
+	double l = 3;
+    repeated EvalStats evals = 4;
+}
+
+message Point {
+	int32 x = 1;
+	int32 y = 2;
+    EvalStats eval = 3;
+}
+
+message Point2f {
+	float x = 1;
+	float y = 2;
+    EvalStats eval = 3;
+}
+
+message Point3f {
+	float x = 1;
+	float y = 2;
+	float z = 3;
+    EvalStats eval = 4;
+}
+
+message HafQuaternion {                         // 四元数结构体（Hamilton）
+    double x = 1;                               // 四元数矢量部分x
+    double y = 2;                               // 四元数矢量部分y
+    double z = 3;                               // 四元数矢量部分z
+    double w = 4;                               // 四元数标量部分w
+    EvalStats eval = 5;
+}
+
+message Angle3f {
+	float center = 1;
+	float left = 2;
+	float right = 3;
+    repeated EvalStats evals = 4;
+}
+
+message Point2fList {
+	repeated Point2f pts_list = 1; 
+    EvalStats eval = 2;
+}
+
+message Point2DList {
+	repeated Point2D pts_list = 1; 
+    EvalStats eval = 2;
+}
+
+message Point3DList {
+	repeated Point3D pts_list = 1; 
+    EvalStats eval = 2;
+}
+
+message Point3fList {
+	repeated Point3f pts_list = 1;
+    EvalStats eval = 2;
+}
+
+message PointList {
+	repeated Point pts_list = 1;
+    EvalStats eval = 2;
+}
+
+message Rect {
+    int32 x = 1;
+    int32 y = 2;
+    int32 w = 3;
+    int32 h = 4;
+    EvalStats eval = 5;
+}
+
+message Rect2f {
+    float x = 1;
+    float y = 2;
+    float w = 3;
+    float h = 4;
+    EvalStats eval = 5;
+}
+
+message Rect3D {
+	Point3D center = 1; // 边框中心点
+	Point3D center_std_dev = 2; // (deprecated) 边框中心点标准差
+	/* 
+	 * 边框大小，长宽高，沿着障碍物航向角方向为长度(Y) 
+	 * 垂直障碍物航向角方向为宽度(X), 遵循右手规则
+	 * 垂直于XY平面的为高度(Z) 
+	 */
+	Point3D size_lwh = 3;   // 边框大小 
+	Point3D size_std_dev = 4; // (deprecated) 边框大小标准差
+	double orientation = 5; // 车辆坐标系下，航向角-弧度 
+	double orientation_std_dev = 6; // 边框航向角标准差
+	/* 边框顶点 : 预留给激光雷达的凸包点
+	* 如果该目标没有被lidar探测，则输出由其他sensor给出的包络点
+	* 凸包点个数范围限制在[6, 32]
+	*/
+	repeated Point3D corners = 7; // 边框顶点
+    EvalStats eval = 8; // mean / std / prob
+}
+
+message Rect2D {
+	Point2D center = 1; // 边框中心点
+	Point2D size = 2; // 边框大小，长宽
+    EvalStats eval = 3;  
+}
+
+message Box3D {
+  Point3D lower_lt = 1;
+  Point3D lower_lb = 2;
+  Point3D lower_rb = 3;
+  Point3D lower_rt = 4;
+  Point3D upper_lt = 5;
+  Point3D upper_lb = 6;
+  Point3D upper_rb = 7;
+  Point3D upper_rt = 8;
+  float conf = 9; // deprecated
+  EvalStats eval = 10;  
+}
+
+message Polygon {
+	repeated Point3D pts = 1;
+    EvalStats eval = 2;  
+}
+
+message PoseAngle {
+	float pitch = 1;
+	float yaw = 2;
+	float roll = 3;
+    repeated EvalStats evals = 4; // 0 - pitch_eval_stats, 1 - yaw_eval_stats, 2 - roll_eval_stats
+}
+
+message Int {
+    int32 val = 1;
+    EvalStats eval = 2;
+}
+
+message Float {
+    float val = 1;
+    EvalStats eval = 2;
+}
+
+message UInt {
+    uint32 val = 1;
+    EvalStats eval = 2;
+}
+
+message FloatArray {
+    repeated float vals = 1;
+    float conf = 2;
+}
+

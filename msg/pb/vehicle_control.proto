@@ -1,0 +1,29 @@
+syntax = "proto3";
+// VERSION
+// 0.1
+package minieye;
+
+/*
+       {
+           "topic": "vehicle_control",
+           "dds_mode": "shm",
+           "data_refresh_rate": 20,
+           "buff_num": 10,
+           "elem_max_size": 200
+       }
+*/
+message VehicleControl
+{
+	uint64 timestamp         = 1;  // 管理面时间(单位：微秒)
+	uint64 tick		         = 2;  // 数据面时间(单位：微秒)
+	uint32 control_state     = 3;  // 控制状态: 0|off, 1|shakehand, 2|execute_unspecified, 3|execute_waiting, 4|execute_moving, 5|suspend, 6|finish, 7|safe_stop
+	float  wheel_cmd         = 4;  // 方向盘指令(单位：°):左正右负
+	float  speed_cmd         = 5;  // 速度指令(单位：m/s) 仅对x50有效
+	uint32 gear_mode         = 6;  // 档位指令：0|无效/不请求，1|空挡，2|前进，3|后退，4|P挡， 其它：无效值
+	float  dist_cmd          = 7;  // 距离指令：(单位：m) (针对部分车型apa“速度-距离”的控制模式接口)
+	bool   is_reach_pathend  = 8;  // 是否到达路径终点(在控制execute_moving状态下，若未到达终点位置，发false，否则发true) 调试用
+	float  l_bias_err        = 9;  // 横向偏差(单位：m) 调试用
+	float  yaw_bias_err      = 10; // 航向偏差(单位：°) 调试用
+	uint32 fail_reason		 = 11; // 终止原因
+	uint32 brake_cmd		 = 12; // 0|无请求，1|舒适刹车，2|紧急刹车
+}

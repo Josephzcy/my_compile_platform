@@ -1,0 +1,41 @@
+data	Input	0	1	conv1	
+conv1	ConvolutionRistretto	1	data	1	conv1_relu	
+conv1_relu	ReLU	1	conv1	1	pooling0	
+pooling0	Pooling	1	conv1_relu	2	conv2_base	sc0	
+conv2_base	ConvolutionRistretto	1	pooling0	1	conv2_base_relu	
+conv2_base_relu	ReLU	1	conv2_base	2	conv2_1	conv2_2	
+conv2_1	ConvolutionRistretto	1	conv2_base_relu	1	conv2_1_relu	
+conv2_1_relu	ReLU	1	conv2_1	1	conv2_base1a	
+conv2_base1a	ConvolutionRistretto	1	conv2_1_relu	1	conv2_base1a_relu	
+conv2_base1a_relu	ReLU	1	conv2_base1a	1	conv2_1_2	
+conv2_1_2	ConvolutionRistretto	1	conv2_base1a_relu	1	conv2_1_2_relu	
+conv2_1_2_relu	ReLU	1	conv2_1_2	1	pooling1	
+pooling1	Pooling	1	conv2_1_2_relu	1	concat0	
+conv2_2	ConvolutionRistretto	1	conv2_base_relu	1	conv2_2_relu	
+conv2_2_relu	ReLU	1	conv2_2	1	conv2_base2a	
+conv2_base2a	ConvolutionRistretto	1	conv2_2_relu	1	conv2_base2a_relu	
+conv2_base2a_relu	ReLU	1	conv2_base2a	1	conv2_2_2	
+conv2_2_2	ConvolutionRistretto	1	conv2_base2a_relu	1	conv2_2_2_relu	
+conv2_2_2_relu	ReLU	1	conv2_2_2	1	pooling2	
+pooling2	Pooling	1	conv2_2_2_relu	1	concat0	
+concat0	Concat	2	pooling1	pooling2	1	conv2_out	
+conv2_out	ConvolutionRistretto	1	concat0	1	conv2_out_relu	
+conv2_out_relu	ReLU	1	conv2_out	1	_plus0	
+sc0	ConvolutionRistretto	1	pooling0	1	sc_relu0	
+sc_relu0	ReLU	1	sc0	1	_plus0	
+_plus0	EltwiseRistretto	2	conv2_out_relu	sc_relu0	2	mix_0_ft	sc_ft	
+mix_0_ft	ConvolutionRistretto	1	_plus0	1	mix_0_relu_ft	
+mix_0_relu_ft	ReLU	1	mix_0_ft	2	mix_1_ft	concat1_ft	
+mix_1_ft	ConvolutionRistretto	1	mix_0_relu_ft	1	mix_1_relu_ft	
+mix_1_relu_ft	ReLU	1	mix_1_ft	2	mix_2_ft	concat1_ft	
+mix_2_ft	ConvolutionRistretto	1	mix_1_relu_ft	1	mix_2_relu_ft	
+mix_2_relu_ft	ReLU	1	mix_2_ft	1	concat1_ft	
+concat1_ft	Concat	3	mix_0_relu_ft	mix_1_relu_ft	mix_2_relu_ft	1	mix_out_ft	
+mix_out_ft	ConvolutionRistretto	1	concat1_ft	1	mix_out_relu_ft	
+mix_out_relu_ft	ReLU	1	mix_out_ft	1	pooling3_ft	
+pooling3_ft	Pooling	1	mix_out_relu_ft	1	_plus1_ft	
+sc_ft	ConvolutionRistretto	1	_plus0	1	sc_relu_ft	
+sc_relu_ft	ReLU	1	sc_ft	1	_plus1_ft	
+_plus1_ft	EltwiseRistretto	2	pooling3_ft	sc_relu_ft	1	flatten0_ft	
+flatten0_ft	Flatten	1	_plus1_ft	1	fc2_ft	
+fc2_ft	FcRistretto	1	flatten0_ft	0	

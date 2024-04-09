@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package minieye;
+
+/*
+* hmi to statemanager
+*/
+// {
+//         "topic": "apa_hmi_signal",
+//         "dds_mode": "shm",
+//         "buff_num": 20,
+//         "elem_max_size": 1024
+// }
+
+message APAHmiSignal{
+    enum APAHmiSignalType{
+        APA_HMI_SIGNAL_UNKNOWN      = 0;  //
+        APA_HMI_SIGNAL_SWITCH_ON    = 1;  //APA open
+        APA_HMI_SIGNAL_SWITCH_OFF   = 2;  //APA close
+    }
+
+    uint32 signal = 1;
+    uint64 timestamp = 2; // 时戳, milliseconds
+    uint64 tick = 3; // 异构设备上的时钟
+}
+
+
+/*
+* statemager to hmi 
+*/
+// {
+//         "topic": "apa_hmi_signal_res",
+//         "dds_mode": "shm",
+//         "buff_num": 20,
+//         "elem_max_size": 1024
+// }
+message APAHmiSignalRes{
+    enum APAHmiSignalResType{
+        APA_HMI_CUR_MODE_UNKNOWN    = 0; //unknown mode
+        APA_HMI_CUR_MODE_APA        = 1; //enter into apa mode
+        APA_HMI_CUR_MODE_POLIT      = 2; //enter into polit mode
+        APA_HMI_CUR_MODE_IDLE       = 3; //enter into idle mode
+        APA_HMI_CUR_MODE_MANTAINCE  = 4; //enter into mantaince mode
+    }
+
+    uint32 resCurMode = 1;//current mode 
+    uint64 timestamp = 2; // 时戳, milliseconds
+    uint64 tick = 3; // 异构设备上的时钟
+}

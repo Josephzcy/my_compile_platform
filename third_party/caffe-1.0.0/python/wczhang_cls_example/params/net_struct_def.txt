@@ -1,0 +1,38 @@
+Data1	Input	0	1	conv1	
+conv1	ConvolutionRistretto	1	Data1	1	conv1_relu	
+conv1_relu	ReLU	1	conv1	1	pooling0	
+pooling0	Pooling	1	conv1_relu	3	conv2_1	conv2_2	sc0	
+conv2_1	ConvolutionRistretto	1	pooling0	1	conv2_1_relu	
+conv2_1_relu	ReLU	1	conv2_1	1	conv2_1_2	
+conv2_1_2	ConvolutionRistretto	1	conv2_1_relu	1	conv2_1_2_relu	
+conv2_1_2_relu	ReLU	1	conv2_1_2	1	pooling1	
+pooling1	Pooling	1	conv2_1_2_relu	1	concat0	
+conv2_2	ConvolutionRistretto	1	pooling0	1	conv2_2_relu	
+conv2_2_relu	ReLU	1	conv2_2	1	conv2_2_2	
+conv2_2_2	ConvolutionRistretto	1	conv2_2_relu	1	conv2_2_2_relu	
+conv2_2_2_relu	ReLU	1	conv2_2_2	1	pooling2	
+pooling2	Pooling	1	conv2_2_2_relu	1	concat0	
+concat0	Concat	2	pooling1	pooling2	1	conv2_out	
+conv2_out	ConvolutionRistretto	1	concat0	1	conv2_out_relu	
+conv2_out_relu	ReLU	1	conv2_out	1	_plus0	
+sc0	ConvolutionRistretto	1	pooling0	1	sc_relu0	
+sc_relu0	ReLU	1	sc0	1	_plus0	
+_plus0	EltwiseRistretto	2	conv2_out_relu	sc_relu0	2	mix_0	sc1	
+mix_0	ConvolutionRistretto	1	_plus0	1	mix_0_relu	
+mix_0_relu	ReLU	1	mix_0	1	mix_1	
+mix_1	ConvolutionRistretto	1	mix_0_relu	1	mix_1_relu	
+mix_1_relu	ReLU	1	mix_1	1	mix_2	
+mix_2	ConvolutionRistretto	1	mix_1_relu	1	mix_2_relu	
+mix_2_relu	ReLU	1	mix_2	1	pooling3	
+pooling3	Pooling	1	mix_2_relu	1	_plus1	
+sc1	ConvolutionRistretto	1	_plus0	1	sc1_relu	
+sc1_relu	ReLU	1	sc1	1	_plus1	
+_plus1	EltwiseRistretto	2	pooling3	sc1_relu	2	mix_3	sc2	
+mix_3	ConvolutionRistretto	1	_plus1	1	mix_3_relu	
+mix_3_relu	ReLU	1	mix_3	1	mix_4	
+mix_4	ConvolutionRistretto	1	mix_3_relu	1	mix_4_relu	
+mix_4_relu	ReLU	1	mix_4	1	_plus2	
+sc2	ConvolutionRistretto	1	_plus1	1	sc2_relu	
+sc2_relu	ReLU	1	sc2	1	_plus2	
+_plus2	EltwiseRistretto	2	mix_4_relu	sc2_relu	1	fc2	
+fc2	FcRistretto	1	_plus2	0	

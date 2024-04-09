@@ -1,0 +1,25 @@
+AUX_SOURCE_DIRECTORY (. SRC_LIST)
+IF(BUILD_SHARED_LIBS)
+    ADD_LIBRARY (ApaCommon SHARED ${SRC_LIST})
+ELSE()
+    ADD_LIBRARY (ApaCommon STATIC ${SRC_LIST})
+ENDIF()
+
+IF(WITH_CV22_CHIP)
+    TARGET_LINK_LIBRARIES(ApaCommon
+        ${OPENCV_LIBS}
+        ${COMMON_LIBS}
+        ${GLOG_LIBS}
+        ambaipc
+        )
+ELSE()
+    TARGET_LINK_LIBRARIES(ApaCommon
+        ${OPENCV_LIBS}
+        ${COMMON_LIBS}
+        ${GLOG_LIBS}
+	gflags
+	pthread
+        )
+ENDIF()
+
+# INSTALL(TARGETS ApaCommon DESTINATION ${INSTALL_LIB_DIR})

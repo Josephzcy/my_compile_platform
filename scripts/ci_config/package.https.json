@@ -1,0 +1,107 @@
+{
+  "name": "ci_build_config",
+  "version": "1.0.0",
+  "target_arch": "tda4",
+  "master_branch": "master_apa_x50",
+  "dependencies": [
+    {
+      "component": "havp_parkingspace_postprocess",
+      "path": "aipilot/modules/havp_parkingspace_postprocess",
+      "url": "https://git.minieye.tech/FusionGroup/havp_parkingspace_postprocess.git",
+      "main_branch": null,
+      "branch": "develop_apal_x50",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "havp_inference",
+      "path": "aipilot/modules/havp_inference",
+      "url": "https://git.minieye.tech/wujiang/havp_inference.git",
+      "main_branch": null,
+      "branch": "master_x50",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "apa_ultrasonic_parkingspace",
+      "path": "aipilot/modules/apa_ultrasonic_parkingspace",
+      "url": "https://git.minieye.tech/wujiang/apa_ultrasonic_parkingspace.git",
+      "main_branch": null,
+      "branch": "master_x50",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "vehicle_control_dds",
+      "path": "aipilot/modules/vehicle_control_dds",
+      "url": "https://git.minieye.tech/zhangpeng/vehicle_control_dds.git",
+      "main_branch": null,
+      "branch": "dev_t1q3",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "apa_planning",
+      "path": "aipilot/modules/apa_planning",
+      "url": "https://git.minieye.tech/fanyu/apa_planning.git",
+      "main_branch": null,
+      "branch": "dev_havp_planning_x50",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "apa_localization",
+      "path": "aipilot/modules/apa_localization",
+      "url": "https://git.minieye.tech/xujian/apa_localization.git",
+      "main_branch": null,
+      "branch": "apa_dev_x50",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "dfg_avm_calib",
+      "path": "aipilot/services/dfg_avm_calib",
+      "url": null,
+      "main_branch": null,
+      "branch": null,
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "bird_eye_view",
+      "path": "aipilot/services/bird_eye_view",
+      "url": null,
+      "main_branch": null,
+      "branch": null,
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "dfg_avm_mapping",
+      "path": "aipilot/services/dfg_avm_mapping",
+      "url": null,
+      "main_branch": null,
+      "branch": null,
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "wheel_radius_calibration",
+      "path": "aipilot/services/wheel_radius_calibration",
+      "url": "https://git.minieye.tech/zhangchengyu/wheel_radius_calibration.git",
+      "main_branch": null,
+      "branch": "master_apa_x50",
+      "build_model": "bazel",
+      "submodules": null
+    },
+    {
+      "component": "apa_manager",
+      "path": "aipilot/modules/apa_manager",
+      "url": "https://git.minieye.tech/huangwei0527/apa_manager.git",
+      "main_branch": null,
+      "branch": "apa_manager_l_qr",
+      "build_model": "bazel",
+      "submodules": null
+    }
+  ]
+}

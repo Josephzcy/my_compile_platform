@@ -1,0 +1,11 @@
+--birdview_video_file=/mnt/hgfs/data3/share/sim_data/20200221165831-apa-demo-type1/Birdview.mp4
+--apa_motion_log_addr=/mnt/hgfs/data3/share/sim_data/20200221165831-apa-demo-type1/log.txt
+--apa_camera_log_addr=/mnt/hgfs/data3/share/sim_data/20200221165831-apa-demo-type1/log_birdview.txt
+--apa_ultrasonic_log_addr=/mnt/hgfs/data3/share/sim_data/20200221165831-apa-demo-type1/log_ultrasonic.txt
+--start_frame_no=0
+--end_frame_no=5999
+
+--birdview_images_file=/mnt/hgfs/data3/share/sim_data/20200221165831-apa-demo-type1/
+--generate_pic=false
+--parkingspot_mode=3
+--print_module_inputs=true

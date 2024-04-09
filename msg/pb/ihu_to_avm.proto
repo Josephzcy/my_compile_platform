@@ -1,0 +1,101 @@
+syntax = "proto3";
+// VERSION
+// 0.1
+package minieye;
+
+/*
+       {
+           "topic": "ihu_to_avm",
+           "dds_mode": "shm",
+           "data_refresh_rate": 20,
+           "buff_num": 20,
+           "elem_max_size": 1024
+       }
+*/
+
+
+
+message IHUToAVM
+{
+  uint32 BtnPress_InputValueX  = 1; // 触碰坐标X
+  uint32 BtnPress_InputValueY  = 2; // 触碰坐标Y
+  uint32 Touch_Event           = 3; // 触碰事件 0x0:Not active, 0x1:Press down, 0x2:Moving, 0x3:Lift up
+  
+  /*
+    0x0:NO_Req
+    0x1:BEV+2D  view
+    0x2:BEV+3D  view
+    0x3:front wide view
+    0x4:rear wide view
+    0x5:BEV + left right view
+  */
+  uint32 View_Mode_Switch      = 4; // avm 视角设置 
+  
+  /*
+    0x0:NO_Req
+    0x1:Request EOL calibration
+    0x2:Enter calibration
+    0x3:Exit calibration
+    0x4:Request service calibration
+  */
+  uint32 CalibrationReq        = 5; // 标定请求 
+  uint32 AVMTransparentHoodSwitch = 6; // 透明底盘开关 0x0:NO_Req, 0x1:ON, 0x2:OFF
+  uint32 AVMTrailSwitch        = 7; // 车辙线开关 0x0:NO_Req, 0x1:ON, 0x2:OFF
+  uint32 AVM_OP_SW             = 8; // AVM 开关 0x0:No_Req 0x1:OpenAVM 0x2:OpenDVR 0x3:Startup_Close
+  uint32 RadarWariningSW       = 9; // 显示雷达盾牌开关 0x0:NO_Req, 0x1:ON, 0x2:OFF
+  uint32 SteeringWheelSW       = 10; // 方向盘转角激活开关 0x0:NO_Req, 0x1:ON, 0x2:OFF
+  uint32 TurnIndicationSW      = 11; // 转向灯激活开关 0x0:NO_Req, 0x1:ON, 0x2:OFF
+  uint32 AutoZoomSW            = 12; // 自动放大视图开关 0x0:NO_Req, 0x1:ON, 0x2:OFF
+  /*
+    0x0:No Req
+    0x1 :Blue
+    0x2 :Red
+    0x3 :White
+    0x4 :Silver
+    0x5 :Brown
+    0x6 :Bright Red
+    0x7 :Orange
+  */
+  uint32 BodyColor             = 13; //车身颜色
+
+  /*
+    0x0:NO_Req
+    0x1:Chinese
+    0x2:English
+    0x3:Arabic
+    0x4:Spanish
+  */
+  uint32 Set_Language          = 14; // 设置语言格式 0x0:NO_Req, 0x1:ON, 0x2:OFF
+  uint32 LicensePlateSW        = 15; // 车牌号设置开关 0x0:NO_Req, 0x1:ON, 0x2:OFF
+  uint32 GuideLineSW           = 16; // 动态引导线设置开关 0x0:NO_Req, 0x1:ON, 0x2:OFF
+  uint32 PASTrigger            = 17; // 雷达检测障碍物激活开关 0x0:NO_Req, 0x1:ON, 0x2:OFF
+  uint32 Set_Transparency      = 18; // 透明度设置 0x0:NO_Req, 
+  uint32 AutoExitSW            = 19; // 自动退出全景开关 0x0:NO_Req, 0x1:ON, 0x2:OFF
+  uint32 FactoryDefault        = 20; // 恢复默认设置开关 0x0:NO_Req, 0x1:ON, 0x2:OFF
+
+  /*
+    0x0: off
+    0x1: standby
+    0x2: searching
+    0x3: planning
+    0x4: shakehand
+    0x5: active
+    0x6: suspended
+    0x7: completed
+    0x8: terminated
+    0x9: failure
+  */
+  uint32 APA_SystemSts         = 21; // APA系统状态
+
+    // 车牌信息，取值范围：0..63
+   uint32 LicensePlate1 = 22; // 牌照省份
+   uint32 LicensePlate2 = 23; // 城市代号
+   uint32 LicensePlate3 = 24;
+   uint32 LicensePlate4 = 25;
+   uint32 LicensePlate5 = 26;
+   uint32 LicensePlate6 = 27;
+   uint32 LicensePlate7 = 28;
+   uint32 LicensePlate8 = 29;
+   uint64 tick  = 30;
+   uint64 timestamp  = 31;
+}

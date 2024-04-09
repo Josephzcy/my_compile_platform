@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package perception;
+
+/*
+{
+    "topic": "parking_mask_clusters",
+    "dds_mode": "shm",
+    "data_refresh_rate": 20,
+    "buff_num": 8,
+    "elem_max_size": 100
+},
+{
+    "topic": "parking_landmark_clusters",
+    "dds_mode": "shm",
+    "data_refresh_rate": 20,
+    "buff_num": 8,
+    "elem_max_size": 100 
+}
+*/
+
+enum LineType{
+    kParkingLine = 0;                        // 车位线
+    kLane = 1;                               // 车道线
+    kBump = 2;                               // 减速带
+    kArrow = 3;                              // 箭头
+    kGroundLine = 4;                         // 接地线
+}
+
+message Point2i{
+    int32 x = 1;
+    int32 y = 2;
+}
+
+// line clusters
+message Line {
+    int32 id = 1;                                 // 目标检测ID (deprecated, 以hit_type为准)
+    LineType type = 2;                            // 类型
+    float confidence = 3;                         // 检测置信度(综合)
+    bool occupied = 4;                            // 是否遮挡
+    repeated int32 associated_camids = 5;
+    repeated Point2i pts_list = 6;			      // 图像坐标系
+}
+
+enum DetectType{
+    // arrow
+    kArrowStraight = 0;
+    kArrowLeft = 1;
+    kArrowRight = 2;
+    kArrowUTurn = 3;
+    kArrowStraightLeft = 4;
+    kArrowStraightRight = 5;
+    kArrowLeftRight = 6;
+    kArrowStraightLeftRight = 7;
+    kArrowStraightUTurn = 8;
+    kArrowLeftTurn = 9;
+    kArrowLeftMerge = 10;
+    kArrowRightMerge = 11;
+    // speed bump
+    kSpeedbumpOccupied = 12;
+    kSpeedbumpUnoccupied = 13;
+}
+
+message Detection {
+    float x = 1;
+    float y = 2;
+    float w = 3;
+    float h = 4;
+    float angle_rad = 5;
+    float score = 6;
+    DetectType type = 7;
+    bool occupied = 8;
+}
+
+message Lines {
+    uint64 frame_id = 1;                                   // 帧IDs
+    uint64 timestamp = 2;                                  // utc时戳, us
+    uint64 tick = 3;                                       // tick时戳, us
+    repeated Line lines = 4;                               // mask list
+    repeated Detection dets = 5;                           // object list
+}
+
+message LinesAddress {
+    int32 size = 1;                          // 序列化大小
+    uint64 address = 2;                      // lines address
+}
+

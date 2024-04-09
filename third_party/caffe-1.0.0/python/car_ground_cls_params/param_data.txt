@@ -1,0 +1,5 @@
+name:data
+type:Input
+input_channel:1
+input_height:80
+input_width:80

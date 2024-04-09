@@ -1,0 +1,2 @@
+Data1	Input	0	1	Convolution1	
+Convolution1	ConvolutionRistretto	1	Data1	2	ReLU1	Convolution2	
